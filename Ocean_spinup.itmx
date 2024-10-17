@@ -1,0 +1,2650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee" uses_arrays="1" uses_submodels=""/>
+		<name>Ocean_spinup</name>
+		<uuid>f70d8701-d8ac-480a-a1ab-2de3e450aaee</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="3.7.2" isee:build_number="3414" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="0" isee:run_prefix="Run" isee:simulation_delay="0" isee:restore_on_start="false" isee:save_interval="1" method="RK4" time_units="Year" isee:instantaneous_flows="false" isee:ignore_module_errors="false" isee:strict_units="false" isee:loop_scores="false" isee:loop_exhaustive_allowed="1000">
+		<start>0</start>
+		<stop>10000</stop>
+		<dt reciprocal="true">8</dt>
+	</sim_specs>
+	<dimensions>
+		<dim name="ClimateCase" size="100"/>
+		<dim name="PCTILE">
+			<elem name="Low"/>
+			<elem name="P25"/>
+			<elem name="Median"/>
+			<elem name="P75"/>
+			<elem name="High"/>
+		</dim>
+		<dim name="Run" size="1"/>
+	</dimensions>
+	<isee:prefs saved_runs="50" keep="false" show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" isee:design="Deluxe Prev-Next Blue Green Pastel" isee:design_custom="false" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" rerun_on_structure_change="false" rifp="true">
+		<isee:ignored_words>
+			<isee:ignored_word>WolrdTrans</isee:ignored_word>
+			<isee:ignored_word>WorldTrans</isee:ignored_word>
+			<isee:ignored_word>IAM</isee:ignored_word>
+			<isee:ignored_word>FRIDA</isee:ignored_word>
+			<isee:ignored_word>IAMs</isee:ignored_word>
+			<isee:ignored_word>Sectorized</isee:ignored_word>
+			<isee:ignored_word>INvestment</isee:ignored_word>
+			<isee:ignored_word>Edenhofer</isee:ignored_word>
+			<isee:ignored_word>hydropower</isee:ignored_word>
+		</isee:ignored_words>
+	</isee:prefs>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" max_advance_time_in_ms="0" model_stops_when_players_drop="false" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<isee:number_format_extenders/>
+	<default_format scale_by="1"/>
+	<data>
+		<export frequency="on_demand" resource="r../Data/Ocean_spinup_output.csv" precomputed="false" isee:format="numbers">
+			<table name="Stocks for initialisation" use_settings="true"/>
+		</export>
+		<import frequency="on_demand" isee:overwrite="true" resource="r../data/spinup_input/FRIDA_input_parameters_100_ocean.csv"/>
+	</data>
+	<isee:sensi_specs_list active_index="0">
+		<isee:sensi_specs name="Sensitivity" method="external" path="r../data/spinup_input/df_climate_case_100_ocean.csv">
+			<isee:variable type="adhoc" name="Ocean.selected_climate_case[1]"/>
+		</isee:sensi_specs>
+	</isee:sensi_specs_list>
+	<isee:optimizer_specs_list active_index="0">
+		<isee:optimizer_specs name="Optimization" method="Powell" use_additional_starts_file="false" additional_starts="0" report_interval="1" confidence_range="0"/>
+	</isee:optimizer_specs_list>
+	<isee:payoff_specs_list>
+		<isee:payoff_specs name="Payoff"/>
+	</isee:payoff_specs_list>
+	<model_units>
+		<unit name="G$">
+			<eqn>Giga*$</eqn>
+		</unit>
+		<unit name="Gh">
+			<eqn>Giga*h</eqn>
+		</unit>
+		<unit name="Gph">
+			<eqn>Gh*p</eqn>
+		</unit>
+		<unit name="GtCO2e">
+			<eqn>Giga*tCO2e</eqn>
+		</unit>
+		<unit name="k$">
+			<eqn>kilo*$</eqn>
+		</unit>
+		<unit name="kh">
+			<eqn>kilo*h</eqn>
+		</unit>
+		<unit name="M$">
+			<eqn>Million*$</eqn>
+		</unit>
+		<unit name="Mha">
+			<eqn>Million*ha</eqn>
+		</unit>
+		<unit name="Mkh">
+			<eqn>Million*kh</eqn>
+		</unit>
+		<unit name="Mkm2">
+			<eqn>Million*km2</eqn>
+		</unit>
+		<unit name="Mm2">
+			<eqn>Million*m2</eqn>
+		</unit>
+		<unit name="Mp">
+			<eqn>Million*p</eqn>
+		</unit>
+		<unit name="Mt redmeat">
+			<eqn>Million*t redmeat</eqn>
+		</unit>
+		<unit name="MtCO2">
+			<eqn>Million*tCO2</eqn>
+		</unit>
+		<unit name="Mtcrop">
+			<eqn>Million*tcrop</eqn>
+		</unit>
+		<unit name="MtH2">
+			<eqn>Million*tH2</eqn>
+		</unit>
+		<unit name="MtN">
+			<eqn>Million*tN</eqn>
+		</unit>
+		<unit name="MtN2O">
+			<eqn>Million*tN2O</eqn>
+		</unit>
+		<unit name="MZJ">
+			<eqn>Million*ZJ</eqn>
+		</unit>
+		<unit name="MtCH4">
+			<eqn>Million*tCH4</eqn>
+		</unit>
+		<unit name="MkgH2">
+			<eqn>Million*kgH2</eqn>
+		</unit>
+		<unit name="TWh">
+			<eqn>Million*MWh</eqn>
+		</unit>
+		<unit name="kWh">
+			<eqn>kilo*w*h</eqn>
+		</unit>
+		<unit name="Mtoe">
+			<eqn>Million*toe</eqn>
+		</unit>
+		<unit name="GW">
+			<eqn>TWh/(kilo*h)</eqn>
+		</unit>
+		<unit name="kilowatt hours per day">
+			<eqn>kWh/day</eqn>
+		</unit>
+		<unit name="kilowatts">
+			<eqn>kW</eqn>
+			<alias>kilowatt</alias>
+		</unit>
+		<unit name="Hour">
+			<eqn/>
+			<alias>Hours</alias>
+		</unit>
+		<unit name="Person">
+			<eqn/>
+			<alias>People</alias>
+			<alias>Persons</alias>
+		</unit>
+		<unit name="Unit">
+			<eqn/>
+			<alias>Units</alias>
+		</unit>
+		<unit name="Week">
+			<eqn/>
+			<alias>Weeks</alias>
+		</unit>
+		<unit name="MtSO2">
+			<eqn>Million*tSO2</eqn>
+		</unit>
+		<unit name="M">
+			<eqn>Million</eqn>
+		</unit>
+		<unit name="KtN2O">
+			<eqn>kilo*tN2O</eqn>
+		</unit>
+		<unit name="MKg">
+			<eqn>Million*kg</eqn>
+		</unit>
+		<unit name="p">
+			<eqn>people</eqn>
+		</unit>
+		<unit name="item">
+			<eqn/>
+			<alias>items</alias>
+		</unit>
+		<unit name="order">
+			<eqn/>
+			<alias>orders</alias>
+		</unit>
+		<unit name="Dimensionless">
+			<eqn>1</eqn>
+			<alias>dmnl</alias>
+			<alias>unitless</alias>
+		</unit>
+		<unit name="Day">
+			<eqn/>
+			<alias>Days</alias>
+		</unit>
+		<unit name="Month">
+			<eqn/>
+			<alias>Months</alias>
+		</unit>
+		<unit name="Euros">
+			<eqn/>
+			<alias>EUR</alias>
+			<alias>euro</alias>
+		</unit>
+		<unit name="euros per year per person">
+			<eqn>EUR/(person-year)</eqn>
+		</unit>
+		<unit name="G">
+			<eqn>Giga</eqn>
+		</unit>
+		<unit name="GtCO2">
+			<eqn>Giga*tCO2</eqn>
+		</unit>
+		<unit name="GtCH4">
+			<eqn>Giga*tCH4</eqn>
+		</unit>
+		<unit name="GtN2O">
+			<eqn>Giga*tN2O</eqn>
+		</unit>
+		<unit name="Year">
+			<eqn/>
+			<alias>yr</alias>
+			<alias>years</alias>
+		</unit>
+		<unit name="MWh">
+			<eqn>MW * hour</eqn>
+		</unit>
+		<unit name="TW">
+			<eqn>Million*MW</eqn>
+		</unit>
+		<unit name="Kelvin">
+			<eqn/>
+			<alias>K</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<module name="Ocean" isee:label="">
+				<format scale_by="auto"/>
+			</module>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_corner_radius="0" popup_background_color="#FFFECF"/>
+				<slider color="#66CC66" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:fancy_appearance="false" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:stacked_container color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="0" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:dual_slider color="#66CC66" background="silver" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<isee:dropdown_input color="black" background="white" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch" isee:on_color="green"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt" isee:show_hover_tip="true"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+				<isee:navigation_widget color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="6" appearance="tabs" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:shape color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid" opacity="1" transparent_background="true" corner_radius="1"/>
+				<isee:selector color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
+				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="5" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</flow>
+					<isee:placeholder color="#228B22" background="white" font_color="#228B22" font_size="9pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="summed" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<stacked_container uid="647" x="402.5" y="699" width="395" height="250">
+					<table isee:start_time="1980" isee:stop_time="1980" interval="1" report_balances="beginning" report_flows="summed" width="395" height="250" comparative="true" isee:export_name="Stocks 1980" isee:mark_for_export="true">
+						<item type="time"/>
+					</table>
+				</stacked_container>
+				<stacked_container uid="649" x="1075" y="840">
+					<table width="350" height="250" comparative="true" isee:export_name="FaIR comparisons" isee:mark_for_export="true">
+						<item type="time"/>
+					</table>
+				</stacked_container>
+				<stacked_container uid="650" x="600" y="1182.5">
+					<table width="350" height="250" comparative="true" isee:export_name="Temp, CO2" isee:mark_for_export="true" title="Temp, CO2">
+						<item type="time"/>
+					</table>
+				</stacked_container>
+				<module label_side="center" x="391" y="284" name="Ocean"/>
+			</view>
+		</views>
+	</model>
+	<model name="Ocean">
+		<variables>
+			<stock name="Warm surface ocean\ncarbon reservoir">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Amount_of_carbon_in_the_warm_surface_ocean_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Low_latitude_ocean_air_sea_carbon_uptake</inflow>
+				<inflow>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</inflow>
+				<outflow>Biological_carbon_pump_C_export_from_warm_surface_to_intermediate_ocean</outflow>
+				<units>GtC</units>
+			</stock>
+			<aux name="Amount of carbon in the\nwarm surface ocean in 1980">
+				<eqn>2218 {2200,  2240}</eqn>
+				<format precision="full"/>
+				<range min="2200" max="2240"/>
+				<units>GtC</units>
+			</aux>
+			<aux name="Amount of carbon in the\ncold surface ocean in 1980">
+				<eqn>326.0 {315,  340}</eqn>
+				<format precision="full"/>
+				<range min="315" max="340"/>
+				<units>GtC</units>
+			</aux>
+			<stock name="Cold surface ocean\ncarbon reservoir">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Amount_of_carbon_in_the_cold_surface_ocean_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Poleward_transport_of_carbon_via_the_overturning_circulation</inflow>
+				<inflow>High_latitude_ocean_air_sea_carbon_uptake</inflow>
+				<outflow>Downward_transport_of_carbon_via_the_overturning_circulation</outflow>
+				<outflow>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</outflow>
+				<outflow>Biological_carbon_pump_C_export_to_the_deep_ocean</outflow>
+				<outflow>Biological_carbon_pump_C_export_from_cold_surface_to_intermediate_ocean</outflow>
+				<units>GtC</units>
+			</stock>
+			<flow name="Poleward transport of carbon\nvia the overturning circulation">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Ocean_overturning_strength*Intermediate_depth_ocean_carbon_reservoir/Volume_of_intermediate_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<stock name="Intermediate depth\nocean carbon reservoir">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Amount_of_carbon_in_the_intermediate_depth_ocean_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Upward_transport_of_carbon_from_the_deep_ocean_via_the_overturning_circulation</inflow>
+				<inflow>Biological_carbon_pump_C_export_from_warm_surface_to_intermediate_ocean</inflow>
+				<inflow>Biological_carbon_pump_C_export_from_cold_surface_to_intermediate_ocean</inflow>
+				<outflow>Poleward_transport_of_carbon_via_the_overturning_circulation</outflow>
+				<outflow>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</outflow>
+				<units>GtC</units>
+			</stock>
+			<aux name="Amount of carbon in the\nintermediate depth ocean in 1980">
+				<eqn>6410.0 {6000, 7000}</eqn>
+				<format precision="full"/>
+				<range min="6000" max="7000"/>
+				<units>GtC</units>
+			</aux>
+			<aux name="Amount of carbon in the\ndeep ocean in 1980">
+				<eqn>29400 {28000, 31000}</eqn>
+				<format precision="full"/>
+				<range min="28000" max="31000"/>
+				<units>GtC</units>
+			</aux>
+			<stock name="Deep ocean\nocean carbon reservoir">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Amount_of_carbon_in_the_deep_ocean_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Downward_transport_of_carbon_via_the_overturning_circulation</inflow>
+				<inflow>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</inflow>
+				<inflow>Biological_carbon_pump_C_export_to_the_deep_ocean</inflow>
+				<outflow>Upward_transport_of_carbon_from_the_deep_ocean_via_the_overturning_circulation</outflow>
+				<units>GtC</units>
+			</stock>
+			<flow name="Downward transport of carbon via the overturning circulation">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Ocean_overturning_strength*Cold_surface_ocean_carbon_reservoir/Volume_of_cold_surface_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Convective mixing of carbon between polar surface ocean and deep ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_to_deep_ocean_mixing_strength * (Cold_surface_ocean_carbon_reservoir/Volume_of_cold_surface_ocean_reservoir-Deep_ocean_ocean_carbon_reservoir/Volume_of_deep_ocean_reservoir)</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Low latitude ocean air\nsea carbon uptake">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Air_sea_gas_exchange_coefficient*Ocean_surface_area*Warm_surface_ocean_area_fraction*(Atmospheric_CO2_Concentration-Warm_surface_ocean_pCO2) / GtC_to_kmol</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="High latitude ocean air\nsea carbon uptake">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Air_sea_gas_exchange_coefficient*Ocean_surface_area*(1.0 - Warm_surface_ocean_area_fraction) * (Atmospheric_CO2_Concentration - Cold_surface_ocean_pCO2) / GtC_to_kmol</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Upward transport of carbon from the deep ocean via the overturning circulation">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Ocean_overturning_strength*Deep_ocean_ocean_carbon_reservoir/Volume_of_deep_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Mixing of carbon from intermediate\ndepth to the warm surface ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Intermediate_to_warm_surface_ocean_mixing_strength * (Intermediate_depth_ocean_carbon_reservoir/Volume_of_intermediate_ocean_reservoir - Warm_surface_ocean_carbon_reservoir/Volume_of_warm_surface_ocean_reservoir)</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<aux name="Reference overturning strength in Sv">
+				<eqn>20.0</eqn>
+				<units>Sv</units>
+			</aux>
+			<aux name="Ocean overturning strength">
+				<eqn>Reference_overturning_strength_in_Sv*from_Sv_to_cubic_metre_per_year</eqn>
+				<format precision="full"/>
+				<units>metre^3/year</units>
+			</aux>
+			<aux name="from Sv to\ncubic metre per year">
+				<eqn>Cubic_metre_per_Sv*Seconds_per_year</eqn>
+				<units>metre^3/year/Sv</units>
+			</aux>
+			<aux name="Cubic metre per Sv">
+				<eqn>1.0e6</eqn>
+				<units>metre^3/Sv</units>
+			</aux>
+			<aux name="Seconds per year">
+				<eqn>31557600</eqn>
+				<units>1/year</units>
+			</aux>
+			<aux name="Intermediate to warm surface ocean mixing strength">
+				<eqn>Reference_intermediate_to_warm_surface_ocean_mixing_strength*from_Sv_to_cubic_metre_per_year</eqn>
+				<format precision="full"/>
+				<units>metre^3/year</units>
+			</aux>
+			<aux name="Cold surface to deep\nocean mixing strength">
+				<eqn>Reference_cold_surface_to_deep_ocean_mixing_strength*from_Sv_to_cubic_metre_per_year</eqn>
+				<format precision="full"/>
+				<units>metre^3/year</units>
+			</aux>
+			<aux name="Reference intermediate to warm surface ocean mixing strength">
+				<eqn>63.0</eqn>
+				<units>Sv</units>
+			</aux>
+			<aux name="Reference cold surface to deep ocean mixing strength">
+				<eqn>17.0</eqn>
+				<units>Sv</units>
+			</aux>
+			<aux name="Warm surface ocean area fraction">
+				<eqn>0.85</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Depth of warm surface ocean layer">
+				<eqn>300.0</eqn>
+				<units>metre</units>
+			</aux>
+			<aux name="Depth of cold\nsurface ocean layer">
+				<eqn>250.0</eqn>
+				<units>metre</units>
+			</aux>
+			<aux name="Thickness of\nintermediate ocean layer">
+				<eqn>600.0</eqn>
+				<units>metre</units>
+			</aux>
+			<aux name="Ocean surface area">
+				<eqn>3.6e14</eqn>
+				<units>metre^2</units>
+			</aux>
+			<aux name="Ocean volume">
+				<eqn>1.36e18</eqn>
+				<units>metre^3</units>
+			</aux>
+			<aux name="Volume of warm surface ocean reservoir">
+				<eqn>Ocean_surface_area*Warm_surface_ocean_area_fraction*Depth_of_warm_surface_ocean_layer</eqn>
+				<format precision="full"/>
+				<units>metre^3</units>
+			</aux>
+			<aux name="Volume of cold surface\nocean reservoir">
+				<eqn>Ocean_surface_area*(1.0 - Warm_surface_ocean_area_fraction) *Depth_of_cold_surface_ocean_layer</eqn>
+				<format precision="full"/>
+				<units>metre^3</units>
+			</aux>
+			<aux name="Volume of intermediate\nocean reservoir">
+				<eqn>Ocean_surface_area*Thickness_of_intermediate_ocean_layer</eqn>
+				<format precision="full"/>
+				<units>metre^3</units>
+			</aux>
+			<aux name="Volume of deep ocean reservoir">
+				<eqn>Ocean_volume-Volume_of_warm_surface_ocean_reservoir-Volume_of_cold_surface_ocean_reservoir-Volume_of_intermediate_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>metre^3</units>
+			</aux>
+			<aux name="Warm surface\nocean pCO2">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>parts_per_million* (warm_surface_ocean_DIC_conentration_unitless/(1.0 + k1_warm/new_hion_warm + k1_warm*k2_warm/new_hion_warm^2)) / kh_warm</eqn>
+				<format precision="full"/>
+				<units>ppm</units>
+			</aux>
+			<aux name="Warm surface ocean temperature">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_reference_temperature+Surface_Temperature_Anomaly*Warm_surface_ocean_temperature_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>deg C</units>
+			</aux>
+			<aux name="Warm surface ocean reference temperature">
+				<eqn>18.64</eqn>
+				<format precision="full"/>
+				<units>deg C</units>
+			</aux>
+			<aux name="Warm surface ocean temperature sensitivity to global T anomaly">
+				<eqn>0.61</eqn>
+				<format precision="full"/>
+				<units>deg C/deg C</units>
+			</aux>
+			<aux name="Cold surface ocean temperature">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_reference_temperature+Surface_Temperature_Anomaly*Cold_surface_ocean_temperature_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>deg C</units>
+			</aux>
+			<aux name="Cold surface ocean\nreference temperature">
+				<eqn>1.01</eqn>
+				<format precision="full"/>
+				<units>deg C</units>
+			</aux>
+			<aux name="Cold surface ocean temperature\nsensitivity to global T anomaly">
+				<eqn>0.41</eqn>
+				<format precision="full"/>
+				<units>deg C/deg C</units>
+			</aux>
+			<aux name="Warm surface ocean salinity unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_reference_salinity+Surface_Temperature_Anomaly*Warm_surface_ocean_salinity_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Warm surface ocean\nreference salinity">
+				<eqn>34.774</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Warm surface ocean salinity\nsensitivity to global T anomaly">
+				<eqn>-0.028</eqn>
+				<format precision="full"/>
+				<units>1/deg C</units>
+			</aux>
+			<aux name="Cold surface ocean salinity unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_reference_salinity+Surface_Temperature_Anomaly*Cold_surface_ocean_salinity_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Cold surface ocean\nreference salinity">
+				<eqn>33.498</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Cold surface ocean salinity\nsensitivity to global T anomaly">
+				<eqn>-0.146</eqn>
+				<format precision="full"/>
+				<units>1/deg C</units>
+			</aux>
+			<aux name="Warm surface ocean alkalinity unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_reference_alkalinity+Surface_Temperature_Anomaly*Warm_surface_ocean_alkalinity_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Warm surface ocean\nreference alkalinity">
+				<eqn>0.002285</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Warm surface ocean alkalinity\nsensitivity to global T anomaly">
+				<eqn>-0.00000230</eqn>
+				<format precision="full"/>
+				<units>1/deg C</units>
+			</aux>
+			<aux name="Cold surface ocean alkalinity unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_reference_alkalinity+Surface_Temperature_Anomaly*Cold_surface_ocean_alkalinity_sensitivity_to_global_T_anomaly</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Cold surface ocean\nreference alkalinity">
+				<eqn>0.002236</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Cold surface ocean alkalinity\nsensitivity to global T anomaly">
+				<eqn>-0.00001233</eqn>
+				<format precision="full"/>
+				<units>1/deg C</units>
+			</aux>
+			<stock name="Warm surface ocean pH">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_pH_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Change_of_warm_surface_ocean_pH</inflow>
+				<units>1</units>
+			</stock>
+			<aux name="Warm surface ocean\npH in 1980">
+				<eqn>8.09 {8.07, 8.12}</eqn>
+				<range min="8.07" max="8.12"/>
+				<units>1</units>
+			</aux>
+			<aux name="Cold surface ocean\npH in 1980">
+				<eqn>8.292 {8.25, 8.4}</eqn>
+				<range min="8.25" max="8.4"/>
+				<units>1</units>
+			</aux>
+			<aux name="Warm TK">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_temperature*deg_C_to_unitless + Kelvin_at_0_deg_C_unitless</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="Kelvin at 0 deg C unitless">
+				<eqn>273.15</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="deg C to unitless">
+				<eqn>1</eqn>
+				<format precision="full"/>
+				<units>1/deg C</units>
+			</aux>
+			<aux name="Cold TK">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_temperature*deg_C_to_unitless + Kelvin_at_0_deg_C_unitless</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="bor warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>boron_sensitivity_to_salinity*(Warm_surface_ocean_salinity_unitless/reference_salinity_for_boron_calculation)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="reference salinity for boron calculation">
+				<eqn>35.0</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="bor cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>boron_sensitivity_to_salinity*(Cold_surface_ocean_salinity_unitless/reference_salinity_for_boron_calculation)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="boron sensitivity to salinity">
+				<eqn>432.5e-6</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kh warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP(9345.17/Warm_TK - 60.2409 + 23.3585*LN(Warm_TK/100.0) + Warm_surface_ocean_salinity_unitless * (0.023517 - 2.3656e-4*Warm_TK + 0.0047036e-4*Warm_TK^2) )</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kh cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP(9345.17/Cold_TK - 60.2409 + 23.3585*LN(Cold_TK/100.0) + Cold_surface_ocean_salinity_unitless * (0.023517 - 2.3656e-4*Cold_TK + 0.0047036e-4*Cold_TK^2) )</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="k1 warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-(3633.86/Warm_TK - 61.2172 + 9.6777*LN(Warm_TK) - 0.011555*Warm_surface_ocean_salinity_unitless + 1.152e-4*Warm_surface_ocean_salinity_unitless^2))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="k1 cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-(3633.86/Cold_TK - 61.2172 + 9.6777*LN(Cold_TK) - 0.011555*Cold_surface_ocean_salinity_unitless + 1.152e-4*Cold_surface_ocean_salinity_unitless^2))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="k2 warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-(471.78/Warm_TK + 25.9290 - 3.16967*LN(Warm_TK) - 0.01781*Warm_surface_ocean_salinity_unitless + 1.122e-4*Warm_surface_ocean_salinity_unitless^2))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="k2 cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-(471.78/Cold_TK + 25.9290 - 3.16967*LN(Cold_TK) - 0.01781*Cold_surface_ocean_salinity_unitless + 1.122e-4*Cold_surface_ocean_salinity_unitless^2))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kb warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP((-8966.90 - 2890.51 * SQRT(Warm_surface_ocean_salinity_unitless) - 77.942 * Warm_surface_ocean_salinity_unitless + 1.728 * Warm_surface_ocean_salinity_unitless^1.5 - 0.0996*Warm_surface_ocean_salinity_unitless^2) / Warm_TK + (148.0248 + 137.194 * SQRT(Warm_surface_ocean_salinity_unitless) + 1.62142 * Warm_surface_ocean_salinity_unitless) + (-24.4344 - 25.085 * SQRT(Warm_surface_ocean_salinity_unitless) - 0.2474 * Warm_surface_ocean_salinity_unitless) * LN(Warm_TK) + 0.053105 * SQRT(Warm_surface_ocean_salinity_unitless) * Warm_TK)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kb cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP((-8966.90 - 2890.51 * SQRT(Cold_surface_ocean_salinity_unitless) - 77.942 * Cold_surface_ocean_salinity_unitless + 1.728 * Cold_surface_ocean_salinity_unitless^1.5 - 0.0996*Cold_surface_ocean_salinity_unitless^2) / Cold_TK + (148.0248 + 137.194 * SQRT(Cold_surface_ocean_salinity_unitless) + 1.62142 * Cold_surface_ocean_salinity_unitless) + (-24.4344 - 25.085 * SQRT(Cold_surface_ocean_salinity_unitless) - 0.2474 * Cold_surface_ocean_salinity_unitless) * LN(Cold_TK) + 0.053105 * SQRT(Cold_surface_ocean_salinity_unitless) * Cold_TK)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kw warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP((-13847.26/Warm_TK + 148.96502 - 23.6521 * LN(Warm_TK)) + (118.67/Warm_TK -5.977 +1.0495 * LN(Warm_TK)) * SQRT(Warm_surface_ocean_salinity_unitless) - 0.01615 * Warm_surface_ocean_salinity_unitless )</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="kw cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>EXP((-13847.26/Cold_TK + 148.96502 - 23.6521 * LN(Cold_TK)) + (118.67/Cold_TK -5.977 +1.0495 * LN(Cold_TK)) * SQRT(Cold_surface_ocean_salinity_unitless) - 0.01615 * Cold_surface_ocean_salinity_unitless )</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="old hion warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-Warm_surface_ocean_pH)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="bo4hg warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>bor_warm*kb_warm/(old_hion_warm+kb_warm)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="fg warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>-bo4hg_warm-(kw_warm/old_hion_warm)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="calkg warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>fg_warm+Warm_surface_ocean_alkalinity_unitless</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="gam warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>warm_surface_ocean_DIC_conentration_unitless/calkg_warm</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="DIC concentration in warm surface layer">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_carbon_reservoir*GtC_to_kmol/Volume_of_warm_surface_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>kmol/metre^3</units>
+			</aux>
+			<aux name="GtC to kmol">
+				<eqn>1.0/12.0107e-12</eqn>
+				<format precision="full"/>
+				<units>kmol/GtC</units>
+			</aux>
+			<aux name="DIC concentration in cold surface layer">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_carbon_reservoir*GtC_to_kmol/Volume_of_cold_surface_ocean_reservoir</eqn>
+				<format precision="full"/>
+				<units>kmol/metre^3</units>
+			</aux>
+			<aux name="tmp warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>((1.0 - gam_warm) * k1_warm)^2 - 4.0 * k1_warm*k2_warm*(1.0 - 2.0 * gam_warm)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="concentration unit">
+				<eqn>1</eqn>
+				<format precision="full"/>
+				<units>kmol/metre^3</units>
+			</aux>
+			<aux name="warm surface ocean DIC conentration unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>DIC_concentration_in_warm_surface_layer/concentration_unit</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="cold surface ocean DIC concentration unitless">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>DIC_concentration_in_cold_surface_layer/concentration_unit</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="new hion warm">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>0.5 * (( gam_warm - 1.0) * k1_warm + SQRT(tmp_warm))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<flow name="Change of warm surface ocean pH">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>(-LOG10(new_hion_warm)-Warm_surface_ocean_pH)/Ocean_surface_pH_change_time_scale</eqn>
+				<units>1/year</units>
+			</flow>
+			<aux name="parts per million">
+				<eqn>1000000</eqn>
+				<format precision="full"/>
+				<units>ppm</units>
+			</aux>
+			<aux name="Cold surface\nocean pCO2">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>parts_per_million* (cold_surface_ocean_DIC_concentration_unitless/(1.0 + k1_cold/new_hion_cold + k1_cold*k2_cold/new_hion_cold^2)) / kh_cold</eqn>
+				<format precision="full"/>
+				<units>ppm</units>
+			</aux>
+			<stock name="Cold surface ocean pH">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_pH_in_1980</eqn>
+				<format precision="full"/>
+				<inflow>Change_of_cold_surface_ocean_pH</inflow>
+				<units>1</units>
+			</stock>
+			<aux name="old hion cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>10^(-Cold_surface_ocean_pH)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="bo4hg cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>bor_cold*kb_cold/(old_hion_cold+kb_cold)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="fg cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>-bo4hg_cold-(kw_cold/old_hion_cold)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="calkg cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>fg_cold+Cold_surface_ocean_alkalinity_unitless</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="gam cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>cold_surface_ocean_DIC_concentration_unitless/calkg_cold</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="tmp cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>((1.0 - gam_cold) * k1_cold)^2 - 4.0 * k1_cold*k2_cold*(1.0 - 2.0 * gam_cold)</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<aux name="new hion cold">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>0.5 * (( gam_cold - 1.0) * k1_cold + SQRT(tmp_cold))</eqn>
+				<format precision="full"/>
+				<units>1</units>
+			</aux>
+			<flow name="Change of cold surface ocean pH">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>(-LOG10(new_hion_cold)-Cold_surface_ocean_pH)/Ocean_surface_pH_change_time_scale</eqn>
+				<units>1/year</units>
+			</flow>
+			<aux name="Ocean surface pH change time scale">
+				<eqn>1</eqn>
+				<format precision="full"/>
+				<units>year</units>
+			</aux>
+			<aux name="Air sea gas exchange coefficient">
+				<eqn>0.00006</eqn>
+				<format precision="full"/>
+				<units>kmol/metre^2/year/ppm</units>
+			</aux>
+			<aux name="Air sea co2 flux" access="output" isee:autocreated="true">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>High_latitude_ocean_air_sea_carbon_uptake + Low_latitude_ocean_air_sea_carbon_uptake</eqn>
+				<isee:summing/>
+				<units>GtC/year</units>
+			</aux>
+			<aux name="Reference strength of biological carbon pump in high latitude ocean">
+				<eqn>6.9</eqn>
+				<units>GtC/year</units>
+			</aux>
+			<aux name="High latitude carbon\npump sensitivity to global T anomaly">
+				<eqn>-0.3</eqn>
+				<units>GtC/year/deg C</units>
+			</aux>
+			<aux name="High latitude carbon pump transfer efficiency">
+				<eqn>0.2</eqn>
+				<units>1</units>
+			</aux>
+			<aux name="Reference strength of biological\ncarbon pump in low\nlatitude ocean">
+				<eqn>0.6</eqn>
+				<units>GtC/year</units>
+			</aux>
+			<aux name="Warm surface ocean\ncarbon export to intermediate ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Reference_strength_of_biological_carbon_pump_in_low_latitude_ocean</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</aux>
+			<aux name="Cold surface ocean\ncarbon export to intermediate ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>(Reference_strength_of_biological_carbon_pump_in_high_latitude_ocean + High_latitude_carbon_pump_sensitivity_to_global_T_anomaly*Surface_Temperature_Anomaly)*(1.0 - High_latitude_carbon_pump_transfer_efficiency)</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</aux>
+			<aux name="Cold surface ocean\ncarbon export to\ndeep ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>(Reference_strength_of_biological_carbon_pump_in_high_latitude_ocean + High_latitude_carbon_pump_sensitivity_to_global_T_anomaly*Surface_Temperature_Anomaly)*(1.0 - High_latitude_carbon_pump_transfer_efficiency)</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</aux>
+			<flow name="Biological carbon pump C\nexport to the deep ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_carbon_export_to_deep_ocean</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Biological carbon pump C\nexport from warm surface to intermediate ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Warm_surface_ocean_carbon_export_to_intermediate_ocean</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<flow name="Biological carbon pump C export from cold surface to intermediate ocean">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Cold_surface_ocean_carbon_export_to_intermediate_ocean</eqn>
+				<format precision="full"/>
+				<units>GtC/Year</units>
+			</flow>
+			<aux name="Atmospheric CO2\nConcentration 1750">
+				<doc>${External Calibration Parameter}
+</doc>
+				<dimensions>
+					<dim name="ClimateCase"/>
+				</dimensions>
+				<element subscript="1">
+					<eqn>276.7664326</eqn>
+				</element>
+				<element subscript="2">
+					<eqn>277.9393859</eqn>
+				</element>
+				<element subscript="3">
+					<eqn>278.3995188</eqn>
+				</element>
+				<element subscript="4">
+					<eqn>275.9362086</eqn>
+				</element>
+				<element subscript="5">
+					<eqn>277.0176915</eqn>
+				</element>
+				<element subscript="6">
+					<eqn>275.7544984</eqn>
+				</element>
+				<element subscript="7">
+					<eqn>281.8547114</eqn>
+				</element>
+				<element subscript="8">
+					<eqn>277.9844569</eqn>
+				</element>
+				<element subscript="9">
+					<eqn>278.3764778</eqn>
+				</element>
+				<element subscript="10">
+					<eqn>275.6936566</eqn>
+				</element>
+				<element subscript="11">
+					<eqn>280.2440653</eqn>
+				</element>
+				<element subscript="12">
+					<eqn>279.2359726</eqn>
+				</element>
+				<element subscript="13">
+					<eqn>278.958023</eqn>
+				</element>
+				<element subscript="14">
+					<eqn>277.7262756</eqn>
+				</element>
+				<element subscript="15">
+					<eqn>277.6518387</eqn>
+				</element>
+				<element subscript="16">
+					<eqn>280.3506504</eqn>
+				</element>
+				<element subscript="17">
+					<eqn>276.7230148</eqn>
+				</element>
+				<element subscript="18">
+					<eqn>277.8980836</eqn>
+				</element>
+				<element subscript="19">
+					<eqn>277.3791176</eqn>
+				</element>
+				<element subscript="20">
+					<eqn>278.7587599</eqn>
+				</element>
+				<element subscript="21">
+					<eqn>278.5635118</eqn>
+				</element>
+				<element subscript="22">
+					<eqn>278.3460789</eqn>
+				</element>
+				<element subscript="23">
+					<eqn>278.0750346</eqn>
+				</element>
+				<element subscript="24">
+					<eqn>277.5891533</eqn>
+				</element>
+				<element subscript="25">
+					<eqn>279.429874</eqn>
+				</element>
+				<element subscript="26">
+					<eqn>277.3610581</eqn>
+				</element>
+				<element subscript="27">
+					<eqn>276.4067201</eqn>
+				</element>
+				<element subscript="28">
+					<eqn>278.0478488</eqn>
+				</element>
+				<element subscript="29">
+					<eqn>279.1325838</eqn>
+				</element>
+				<element subscript="30">
+					<eqn>277.7131291</eqn>
+				</element>
+				<element subscript="31">
+					<eqn>280.3643859</eqn>
+				</element>
+				<element subscript="32">
+					<eqn>278.8192149</eqn>
+				</element>
+				<element subscript="33">
+					<eqn>279.8652549</eqn>
+				</element>
+				<element subscript="34">
+					<eqn>276.3594365</eqn>
+				</element>
+				<element subscript="35">
+					<eqn>279.0307927</eqn>
+				</element>
+				<element subscript="36">
+					<eqn>279.840828</eqn>
+				</element>
+				<element subscript="37">
+					<eqn>276.9514437</eqn>
+				</element>
+				<element subscript="38">
+					<eqn>279.0199108</eqn>
+				</element>
+				<element subscript="39">
+					<eqn>277.4735759</eqn>
+				</element>
+				<element subscript="40">
+					<eqn>277.1060194</eqn>
+				</element>
+				<element subscript="41">
+					<eqn>281.7357727</eqn>
+				</element>
+				<element subscript="42">
+					<eqn>279.1116946</eqn>
+				</element>
+				<element subscript="43">
+					<eqn>275.7745268</eqn>
+				</element>
+				<element subscript="44">
+					<eqn>277.8380534</eqn>
+				</element>
+				<element subscript="45">
+					<eqn>275.1914961</eqn>
+				</element>
+				<element subscript="46">
+					<eqn>278.8532762</eqn>
+				</element>
+				<element subscript="47">
+					<eqn>274.1057589</eqn>
+				</element>
+				<element subscript="48">
+					<eqn>276.1567925</eqn>
+				</element>
+				<element subscript="49">
+					<eqn>273.4669298</eqn>
+				</element>
+				<element subscript="50">
+					<eqn>275.9923289</eqn>
+				</element>
+				<element subscript="51">
+					<eqn>279.3471552</eqn>
+				</element>
+				<element subscript="52">
+					<eqn>281.0284677</eqn>
+				</element>
+				<element subscript="53">
+					<eqn>278.0842942</eqn>
+				</element>
+				<element subscript="54">
+					<eqn>278.0855307</eqn>
+				</element>
+				<element subscript="55">
+					<eqn>279.1346416</eqn>
+				</element>
+				<element subscript="56">
+					<eqn>277.796549</eqn>
+				</element>
+				<element subscript="57">
+					<eqn>278.5635247</eqn>
+				</element>
+				<element subscript="58">
+					<eqn>278.6687425</eqn>
+				</element>
+				<element subscript="59">
+					<eqn>276.4988313</eqn>
+				</element>
+				<element subscript="60">
+					<eqn>279.7627942</eqn>
+				</element>
+				<element subscript="61">
+					<eqn>277.3309446</eqn>
+				</element>
+				<element subscript="62">
+					<eqn>279.158229</eqn>
+				</element>
+				<element subscript="63">
+					<eqn>277.8405587</eqn>
+				</element>
+				<element subscript="64">
+					<eqn>278.5798408</eqn>
+				</element>
+				<element subscript="65">
+					<eqn>279.8469066</eqn>
+				</element>
+				<element subscript="66">
+					<eqn>278.4053154</eqn>
+				</element>
+				<element subscript="67">
+					<eqn>280.6638829</eqn>
+				</element>
+				<element subscript="68">
+					<eqn>277.9903903</eqn>
+				</element>
+				<element subscript="69">
+					<eqn>274.3222922</eqn>
+				</element>
+				<element subscript="70">
+					<eqn>276.2036489</eqn>
+				</element>
+				<element subscript="71">
+					<eqn>278.8478615</eqn>
+				</element>
+				<element subscript="72">
+					<eqn>279.0029974</eqn>
+				</element>
+				<element subscript="73">
+					<eqn>278.6620819</eqn>
+				</element>
+				<element subscript="74">
+					<eqn>281.356877</eqn>
+				</element>
+				<element subscript="75">
+					<eqn>277.8683145</eqn>
+				</element>
+				<element subscript="76">
+					<eqn>278.9524585</eqn>
+				</element>
+				<element subscript="77">
+					<eqn>276.2080498</eqn>
+				</element>
+				<element subscript="78">
+					<eqn>279.1008039</eqn>
+				</element>
+				<element subscript="79">
+					<eqn>278.6396889</eqn>
+				</element>
+				<element subscript="80">
+					<eqn>278.5503298</eqn>
+				</element>
+				<element subscript="81">
+					<eqn>281.7096387</eqn>
+				</element>
+				<element subscript="82">
+					<eqn>277.5219076</eqn>
+				</element>
+				<element subscript="83">
+					<eqn>280.528018</eqn>
+				</element>
+				<element subscript="84">
+					<eqn>280.4085308</eqn>
+				</element>
+				<element subscript="85">
+					<eqn>279.4181174</eqn>
+				</element>
+				<element subscript="86">
+					<eqn>280.4601021</eqn>
+				</element>
+				<element subscript="87">
+					<eqn>277.4080268</eqn>
+				</element>
+				<element subscript="88">
+					<eqn>277.3890822</eqn>
+				</element>
+				<element subscript="89">
+					<eqn>278.0652579</eqn>
+				</element>
+				<element subscript="90">
+					<eqn>279.1823508</eqn>
+				</element>
+				<element subscript="91">
+					<eqn>274.3409117</eqn>
+				</element>
+				<element subscript="92">
+					<eqn>277.1247595</eqn>
+				</element>
+				<element subscript="93">
+					<eqn>278.8883161</eqn>
+				</element>
+				<element subscript="94">
+					<eqn>279.8257055</eqn>
+				</element>
+				<element subscript="95">
+					<eqn>276.1515589</eqn>
+				</element>
+				<element subscript="96">
+					<eqn>279.2048307</eqn>
+				</element>
+				<element subscript="97">
+					<eqn>280.058973</eqn>
+				</element>
+				<element subscript="98">
+					<eqn>278.6374334</eqn>
+				</element>
+				<element subscript="99">
+					<eqn>277.7964332</eqn>
+				</element>
+				<element subscript="100">
+					<eqn>279.537591</eqn>
+				</element>
+				<units>ppm</units>
+			</aux>
+			<aux name="Atmospheric CO2 Concentration">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>Atmospheric_CO2_Concentration_1750[selected_climate_case[Run]]</eqn>
+				<units>ppm</units>
+			</aux>
+			<aux name="Surface Temperature Anomaly">
+				<eqn>0</eqn>
+				<units>deg C</units>
+			</aux>
+			<aux name="selected climate case">
+				<dimensions>
+					<dim name="Run"/>
+				</dimensions>
+				<eqn>49</eqn>
+				<units>dmnl</units>
+			</aux>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_corner_radius="0" popup_background_color="#FFFECF"/>
+				<slider color="#66CC66" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:fancy_appearance="false" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:stacked_container color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="0" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:dual_slider color="#66CC66" background="silver" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<isee:dropdown_input color="black" background="white" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch" isee:on_color="green"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt" isee:show_hover_tip="true"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+				<isee:navigation_widget color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="6" appearance="tabs" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:shape color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid" opacity="1" transparent_background="true" corner_radius="1"/>
+				<isee:selector color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
+				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="4" isee:scroll_y="1338.33" zoom="60" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="11pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</flow>
+					<isee:placeholder color="#228B22" background="white" font_color="#228B22" font_size="11pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
+						<shape type="rectangle" width="67" height="55"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="11pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="11pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1"/>
+							<isee:series_style color="fuchsia" thickness="1"/>
+							<isee:series_style color="#008F44" thickness="1"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1"/>
+							<isee:series_style color="#0CA0FF" thickness="1"/>
+							<isee:series_style color="lime" thickness="1"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1"/>
+							<isee:series_style color="#F586FF" thickness="1"/>
+							<isee:series_style color="black" thickness="1"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<stock label_side="center" x="1046.49" y="1421.33" width="227.125" height="42.75" name="Warm surface ocean\ncarbon reservoir"/>
+				<aux x="187.75" y="243.161" name="Amount of carbon in the\nwarm surface ocean in 1980"/>
+				<aux x="322.557" y="243.161" name="Amount of carbon in the\ncold surface ocean in 1980"/>
+				<stock label_side="center" x="1408.55" y="1423.4" width="241.779" height="33.3631" name="Cold surface ocean\ncarbon reservoir"/>
+				<flow label_side="bottom" x="1433.83" y="1537.76" name="Poleward transport of carbon\nvia the overturning circulation">
+					<pts>
+						<pt x="1433.83" y="1618.76"/>
+						<pt x="1433.83" y="1456.76"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="1071.98" y="1618.76" width="372.143" height="34.4286" name="Intermediate depth\nocean carbon reservoir"/>
+				<aux x="239.75" y="322.5" name="Amount of carbon in the\nintermediate depth ocean in 1980"/>
+				<aux x="239.75" y="411.071" name="Amount of carbon in the\ndeep ocean in 1980"/>
+				<stock label_side="center" x="1051.03" y="1845.9" width="655.571" height="108.214" name="Deep ocean\nocean carbon reservoir"/>
+				<flow label_side="bottom" x="1506.64" y="1651.33" name="Downward transport of carbon via the overturning circulation">
+					<pts>
+						<pt x="1506.64" y="1456.76"/>
+						<pt x="1506.64" y="1845.9"/>
+					</pts>
+				</flow>
+				<flow label_side="right" label_angle="45" x="1616.29" y="1651.33" name="Convective mixing of carbon between polar surface ocean and deep ocean">
+					<pts>
+						<pt x="1616.29" y="1456.76"/>
+						<pt x="1616.29" y="1845.9"/>
+					</pts>
+				</flow>
+				<flow label_side="left" x="1164.05" y="1341.83" name="Low latitude ocean air\nsea carbon uptake">
+					<pts>
+						<pt x="1164.05" y="1253.33"/>
+						<pt x="1164.05" y="1421.33"/>
+					</pts>
+				</flow>
+				<flow label_side="right" x="1541.81" y="1345.37" name="High latitude ocean air\nsea carbon uptake">
+					<pts>
+						<pt x="1541.81" y="1258.33"/>
+						<pt x="1541.81" y="1423.4"/>
+					</pts>
+				</flow>
+				<flow x="1247.53" y="1749.54" name="Upward transport of carbon from the deep ocean via the overturning circulation">
+					<pts>
+						<pt x="1247.53" y="1845.9"/>
+						<pt x="1247.53" y="1653.19"/>
+					</pts>
+				</flow>
+				<flow label_side="bottom" x="1229.53" y="1541.42" name="Mixing of carbon from intermediate\ndepth to the warm surface ocean">
+					<pts>
+						<pt x="1229.53" y="1618.76"/>
+						<pt x="1229.53" y="1464.08"/>
+					</pts>
+				</flow>
+				<text_box uid="1" x="87.5506" y="1217.07" width="203.5" height="21.25">Setting the overturning strength</text_box>
+				<aux x="174" y="1251.5" name="Reference overturning strength in Sv"/>
+				<aux x="234.384" y="1357.13" name="Ocean overturning strength"/>
+				<aux x="320" y="1272.5" name="from Sv to\ncubic metre per year"/>
+				<connector uid="2" angle="322.595">
+					<from>Reference_overturning_strength_in_Sv</from>
+					<to>Ocean_overturning_strength</to>
+				</connector>
+				<connector uid="3" angle="191.31">
+					<from>from_Sv_to_cubic_metre_per_year</from>
+					<to>Ocean_overturning_strength</to>
+				</connector>
+				<aux x="395" y="1218.5" name="Cubic metre per Sv"/>
+				<aux x="435" y="1290.5" name="Seconds per year"/>
+				<connector uid="4" angle="199.983">
+					<from>Cubic_metre_per_Sv</from>
+					<to>from_Sv_to_cubic_metre_per_year</to>
+				</connector>
+				<connector uid="5" angle="152.784">
+					<from>Seconds_per_year</from>
+					<to>from_Sv_to_cubic_metre_per_year</to>
+				</connector>
+				<connector uid="6" angle="50.1944">
+					<from>
+						<alias uid="7"/>
+					</from>
+					<to>Poleward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="8" angle="14.2934">
+					<from>
+						<alias uid="7"/>
+					</from>
+					<to>Downward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="9" angle="204.94">
+					<from>
+						<alias uid="7"/>
+					</from>
+					<to>Upward_transport_of_carbon_from_the_deep_ocean_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="10" angle="149.474">
+					<from>Deep_ocean_ocean_carbon_reservoir</from>
+					<to>Upward_transport_of_carbon_from_the_deep_ocean_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="11" angle="9.18818">
+					<from>Intermediate_depth_ocean_carbon_reservoir</from>
+					<to>Poleward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="12" angle="263.84">
+					<from>Cold_surface_ocean_carbon_reservoir</from>
+					<to>Downward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="13" angle="292.349">
+					<from>Cold_surface_ocean_carbon_reservoir</from>
+					<to>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</to>
+				</connector>
+				<connector uid="14" angle="19.3315">
+					<from>Deep_ocean_ocean_carbon_reservoir</from>
+					<to>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</to>
+				</connector>
+				<connector uid="15" angle="106.784">
+					<from>Intermediate_depth_ocean_carbon_reservoir</from>
+					<to>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</to>
+				</connector>
+				<connector uid="16" angle="307.44">
+					<from>Warm_surface_ocean_carbon_reservoir</from>
+					<to>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</to>
+				</connector>
+				<aux x="144.5" y="1652.13" name="Intermediate to warm surface ocean mixing strength"/>
+				<aux x="315.5" y="1652.13" name="Cold surface to deep\nocean mixing strength"/>
+				<aux label_side="top" x="126.5" y="1557.07" name="Reference intermediate to warm surface ocean mixing strength"/>
+				<aux label_side="top" x="353.5" y="1562.07" name="Reference cold surface to deep ocean mixing strength"/>
+				<connector uid="17" angle="280.722">
+					<from>Reference_intermediate_to_warm_surface_ocean_mixing_strength</from>
+					<to>Intermediate_to_warm_surface_ocean_mixing_strength</to>
+				</connector>
+				<connector uid="18" angle="247.123">
+					<from>Reference_cold_surface_to_deep_ocean_mixing_strength</from>
+					<to>Cold_surface_to_deep_ocean_mixing_strength</to>
+				</connector>
+				<connector uid="19" angle="203.858">
+					<from>
+						<alias uid="20"/>
+					</from>
+					<to>Intermediate_to_warm_surface_ocean_mixing_strength</to>
+				</connector>
+				<connector uid="21" angle="334.209">
+					<from>
+						<alias uid="20"/>
+					</from>
+					<to>Cold_surface_to_deep_ocean_mixing_strength</to>
+				</connector>
+				<connector uid="22" angle="356.605">
+					<from>
+						<alias uid="23"/>
+					</from>
+					<to>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</to>
+				</connector>
+				<connector uid="24" angle="228.601">
+					<from>
+						<alias uid="25"/>
+					</from>
+					<to>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</to>
+				</connector>
+				<text_box uid="26" x="51.7202" y="751.976" width="307.25" height="21.25">Calculation of volumes of ocean carbon reservoirs</text_box>
+				<aux label_side="top" x="223.667" y="817.833" name="Warm surface ocean area fraction"/>
+				<aux label_side="top" x="332.792" y="817.833" name="Depth of warm surface ocean layer"/>
+				<aux label_side="top" x="440.417" y="817.833" name="Depth of cold\nsurface ocean layer"/>
+				<aux label_side="top" x="544.667" y="818.404" name="Thickness of\nintermediate ocean layer"/>
+				<aux label_side="top" x="81.2917" y="817.833" name="Ocean surface area"/>
+				<aux x="81.2917" y="1008.83" name="Ocean volume"/>
+				<aux x="223.667" y="924.833" name="Volume of warm surface ocean reservoir"/>
+				<aux x="371.542" y="924.833" name="Volume of cold surface\nocean reservoir"/>
+				<aux x="544.667" y="927.833" name="Volume of intermediate\nocean reservoir"/>
+				<aux x="274.292" y="1041.83" name="Volume of deep ocean reservoir"/>
+				<connector uid="27" angle="307.802">
+					<from>Ocean_surface_area</from>
+					<to>Volume_of_warm_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="28" angle="339.764">
+					<from>Ocean_surface_area</from>
+					<to>Volume_of_cold_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="29" angle="346.646">
+					<from>Ocean_surface_area</from>
+					<to>Volume_of_intermediate_ocean_reservoir</to>
+				</connector>
+				<connector uid="30" angle="270">
+					<from>Warm_surface_ocean_area_fraction</from>
+					<to>Volume_of_warm_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="31" angle="324.111">
+					<from>Warm_surface_ocean_area_fraction</from>
+					<to>Volume_of_cold_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="32" angle="224.437">
+					<from>Depth_of_warm_surface_ocean_layer</from>
+					<to>Volume_of_warm_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="33" angle="237.231">
+					<from>Depth_of_cold_surface_ocean_layer</from>
+					<to>Volume_of_cold_surface_ocean_reservoir</to>
+				</connector>
+				<connector uid="34" angle="270">
+					<from>Thickness_of_intermediate_ocean_layer</from>
+					<to>Volume_of_intermediate_ocean_reservoir</to>
+				</connector>
+				<connector uid="35" angle="309.987">
+					<from>Volume_of_warm_surface_ocean_reservoir</from>
+					<to>Volume_of_deep_ocean_reservoir</to>
+				</connector>
+				<connector uid="36" angle="232.728">
+					<from>Volume_of_cold_surface_ocean_reservoir</from>
+					<to>Volume_of_deep_ocean_reservoir</to>
+				</connector>
+				<connector uid="37" angle="217.405">
+					<from>Volume_of_intermediate_ocean_reservoir</from>
+					<to>Volume_of_deep_ocean_reservoir</to>
+				</connector>
+				<connector uid="38" angle="5.13638">
+					<from>Ocean_volume</from>
+					<to>Volume_of_deep_ocean_reservoir</to>
+				</connector>
+				<connector uid="39" angle="125.538">
+					<from>
+						<alias uid="40"/>
+					</from>
+					<to>Upward_transport_of_carbon_from_the_deep_ocean_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="41" angle="153.465">
+					<from>
+						<alias uid="42"/>
+					</from>
+					<to>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</to>
+				</connector>
+				<connector uid="43" angle="241.888">
+					<from>
+						<alias uid="44"/>
+					</from>
+					<to>Downward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<connector uid="45" angle="296.799">
+					<from>
+						<alias uid="44"/>
+					</from>
+					<to>Convective_mixing_of_carbon_between_polar_surface_ocean_and_deep_ocean</to>
+				</connector>
+				<connector uid="46" angle="337.441">
+					<from>
+						<alias uid="47"/>
+					</from>
+					<to>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</to>
+				</connector>
+				<connector uid="48" angle="8.51037">
+					<from>
+						<alias uid="49"/>
+					</from>
+					<to>Mixing_of_carbon_from_intermediate_depth_to_the_warm_surface_ocean</to>
+				</connector>
+				<connector uid="50" angle="4.56903">
+					<from>
+						<alias uid="49"/>
+					</from>
+					<to>Poleward_transport_of_carbon_via_the_overturning_circulation</to>
+				</connector>
+				<aux label_side="bottom" x="1287.73" y="921.643" name="Warm surface\nocean pCO2"/>
+				<aux x="1160.05" y="155.333" name="Warm surface ocean temperature"/>
+				<aux label_side="left" x="1087.22" y="114.5" name="Warm surface ocean reference temperature"/>
+				<aux label_side="left" x="1087.22" y="148.333" name="Warm surface ocean temperature sensitivity to global T anomaly"/>
+				<connector uid="51" angle="354.51">
+					<from>Warm_surface_ocean_temperature_sensitivity_to_global_T_anomaly</from>
+					<to>Warm_surface_ocean_temperature</to>
+				</connector>
+				<connector uid="52" angle="335.588">
+					<from>Warm_surface_ocean_reference_temperature</from>
+					<to>Warm_surface_ocean_temperature</to>
+				</connector>
+				<aux x="1595.65" y="155.333" name="Cold surface ocean temperature"/>
+				<aux label_side="right" x="1651.43" y="101.643" name="Cold surface ocean\nreference temperature"/>
+				<aux label_side="right" x="1651.43" y="139.476" name="Cold surface ocean temperature\nsensitivity to global T anomaly"/>
+				<connector uid="54" angle="195.869">
+					<from>Cold_surface_ocean_temperature_sensitivity_to_global_T_anomaly</from>
+					<to>Cold_surface_ocean_temperature</to>
+				</connector>
+				<connector uid="55" angle="223.905">
+					<from>Cold_surface_ocean_reference_temperature</from>
+					<to>Cold_surface_ocean_temperature</to>
+				</connector>
+				<aux x="1164.37" y="335.714" name="Warm surface ocean salinity unitless"/>
+				<aux label_side="left" x="1092.22" y="296.88" name="Warm surface ocean\nreference salinity"/>
+				<aux label_side="left" x="1092.22" y="335.714" name="Warm surface ocean salinity\nsensitivity to global T anomaly"/>
+				<connector uid="57" angle="0.553269">
+					<from>Warm_surface_ocean_reference_salinity</from>
+					<to>Warm_surface_ocean_salinity_unitless</to>
+				</connector>
+				<connector uid="58" angle="10.3471">
+					<from>Warm_surface_ocean_salinity_sensitivity_to_global_T_anomaly</from>
+					<to>Warm_surface_ocean_salinity_unitless</to>
+				</connector>
+				<aux label_side="bottom" x="1602.07" y="291.429" name="Cold surface ocean salinity unitless"/>
+				<aux label_side="right" x="1683.57" y="264.737" name="Cold surface ocean\nreference salinity"/>
+				<aux label_side="right" x="1683.57" y="299.405" name="Cold surface ocean salinity\nsensitivity to global T anomaly"/>
+				<connector uid="60" angle="198.134">
+					<from>Cold_surface_ocean_reference_salinity</from>
+					<to>Cold_surface_ocean_salinity_unitless</to>
+				</connector>
+				<connector uid="61" angle="174.41">
+					<from>Cold_surface_ocean_salinity_sensitivity_to_global_T_anomaly</from>
+					<to>Cold_surface_ocean_salinity_unitless</to>
+				</connector>
+				<aux x="1160.05" y="233.929" name="Warm surface ocean alkalinity unitless"/>
+				<aux label_side="left" x="1089.95" y="195.095" name="Warm surface ocean\nreference alkalinity"/>
+				<aux label_side="left" x="1089.95" y="233.929" name="Warm surface ocean alkalinity\nsensitivity to global T anomaly"/>
+				<connector uid="63" angle="0.553269">
+					<from>Warm_surface_ocean_reference_alkalinity</from>
+					<to>Warm_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<connector uid="64" angle="10.3471">
+					<from>Warm_surface_ocean_alkalinity_sensitivity_to_global_T_anomaly</from>
+					<to>Warm_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<aux x="1595.65" y="221.786" name="Cold surface ocean alkalinity unitless"/>
+				<aux label_side="right" x="1673.71" y="191.762" name="Cold surface ocean\nreference alkalinity"/>
+				<aux label_side="right" x="1670.71" y="226.429" name="Cold surface ocean alkalinity\nsensitivity to global T anomaly"/>
+				<connector uid="65" angle="201.036">
+					<from>Cold_surface_ocean_reference_alkalinity</from>
+					<to>Cold_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<connector uid="66" angle="176.461">
+					<from>Cold_surface_ocean_alkalinity_sensitivity_to_global_T_anomaly</from>
+					<to>Cold_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<text_box uid="69" x="170.194" y="1490.82" width="203.5" height="21.25">Setting the mixing strength</text_box>
+				<stock x="875.571" y="1039.79" name="Warm surface ocean pH"/>
+				<aux x="171.036" y="589.964" name="Warm surface ocean\npH in 1980"/>
+				<aux x="321.843" y="589.964" name="Cold surface ocean\npH in 1980"/>
+				<aux x="1337.34" y="341.429" name="Warm TK"/>
+				<aux x="1380.97" y="288.762" name="Kelvin at 0 deg C unitless"/>
+				<connector uid="70" angle="234.495">
+					<from>Kelvin_at_0_deg_C_unitless</from>
+					<to>Warm_TK</to>
+				</connector>
+				<connector uid="71" angle="318.715">
+					<from>Warm_surface_ocean_temperature</from>
+					<to>Warm_TK</to>
+				</connector>
+				<aux x="1380.97" y="248.125" name="deg C to unitless"/>
+				<aux x="1426.09" y="341.429" name="Cold TK"/>
+				<connector uid="72" angle="310.589">
+					<from>Kelvin_at_0_deg_C_unitless</from>
+					<to>Cold_TK</to>
+				</connector>
+				<connector uid="73" angle="304.951">
+					<from>deg_C_to_unitless</from>
+					<to>Cold_TK</to>
+				</connector>
+				<connector uid="74" angle="243.397">
+					<from>deg_C_to_unitless</from>
+					<to>Warm_TK</to>
+				</connector>
+				<connector uid="75" angle="223.49">
+					<from>Cold_surface_ocean_temperature</from>
+					<to>Cold_TK</to>
+				</connector>
+				<aux x="1306.23" y="444.286" name="bor warm"/>
+				<connector uid="76" angle="325.886">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>bor_warm</to>
+				</connector>
+				<aux x="1380.97" y="438.161" name="reference salinity for boron calculation"/>
+				<aux x="1463.74" y="444.286" name="bor cold"/>
+				<connector uid="77" angle="227.854">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>bor_cold</to>
+				</connector>
+				<connector uid="78" angle="355.768">
+					<from>reference_salinity_for_boron_calculation</from>
+					<to>bor_cold</to>
+				</connector>
+				<connector uid="79" angle="184.685">
+					<from>reference_salinity_for_boron_calculation</from>
+					<to>bor_warm</to>
+				</connector>
+				<aux x="1380.97" y="391.875" name="boron sensitivity to salinity"/>
+				<connector uid="80" angle="215.042">
+					<from>boron_sensitivity_to_salinity</from>
+					<to>bor_warm</to>
+				</connector>
+				<connector uid="81" angle="327.657">
+					<from>boron_sensitivity_to_salinity</from>
+					<to>bor_cold</to>
+				</connector>
+				<aux x="1260.11" y="482.732" name="kh warm"/>
+				<connector uid="82" angle="225.99">
+					<from>Warm_TK</from>
+					<to>kh_warm</to>
+				</connector>
+				<connector uid="83" angle="303.072">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>kh_warm</to>
+				</connector>
+				<aux x="1505.82" y="482.732" name="kh cold"/>
+				<connector uid="84" angle="310.524">
+					<from>Cold_TK</from>
+					<to>kh_cold</to>
+				</connector>
+				<connector uid="85" angle="234.482">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>kh_cold</to>
+				</connector>
+				<aux x="1228.57" y="526.786" name="k1 warm"/>
+				<connector uid="86" angle="220.481">
+					<from>Warm_TK</from>
+					<to>k1_warm</to>
+				</connector>
+				<connector uid="87" angle="297.212">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>k1_warm</to>
+				</connector>
+				<aux x="1544.28" y="526.786" name="k1 cold"/>
+				<connector uid="88" angle="319.118">
+					<from>Cold_TK</from>
+					<to>k1_cold</to>
+				</connector>
+				<connector uid="89" angle="264.209">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>k1_cold</to>
+				</connector>
+				<aux x="1199.28" y="572.5" name="k2 warm"/>
+				<connector uid="90" angle="285.619">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>k2_warm</to>
+				</connector>
+				<connector uid="91" angle="221.764">
+					<from>Warm_TK</from>
+					<to>k2_warm</to>
+				</connector>
+				<aux x="1577.65" y="572.5" name="k2 cold"/>
+				<connector uid="92" angle="277.631">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>k2_cold</to>
+				</connector>
+				<connector uid="93" angle="327.488">
+					<from>Cold_TK</from>
+					<to>k2_cold</to>
+				</connector>
+				<aux x="1173.57" y="622.5" name="kb warm"/>
+				<connector uid="94" angle="255.339">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>kb_warm</to>
+				</connector>
+				<connector uid="95" angle="218.136">
+					<from>Warm_TK</from>
+					<to>kb_warm</to>
+				</connector>
+				<aux x="1602.07" y="622.5" name="kb cold"/>
+				<connector uid="96" angle="286.877">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>kb_cold</to>
+				</connector>
+				<connector uid="97" angle="335.109">
+					<from>Cold_TK</from>
+					<to>kb_cold</to>
+				</connector>
+				<aux x="1151.43" y="674.643" name="kw warm"/>
+				<connector uid="98" angle="250.295">
+					<from>Warm_surface_ocean_salinity_unitless</from>
+					<to>kw_warm</to>
+				</connector>
+				<connector uid="99" angle="212.307">
+					<from>Warm_TK</from>
+					<to>kw_warm</to>
+				</connector>
+				<aux x="1633.43" y="674.643" name="kw cold"/>
+				<connector uid="100" angle="292.802">
+					<from>Cold_surface_ocean_salinity_unitless</from>
+					<to>kw_cold</to>
+				</connector>
+				<connector uid="101" angle="337.215">
+					<from>Cold_TK</from>
+					<to>kw_cold</to>
+				</connector>
+				<aux x="804.143" y="921.643" name="old hion warm"/>
+				<connector uid="102" angle="90.9485">
+					<from>Warm_surface_ocean_pH</from>
+					<to>old_hion_warm</to>
+				</connector>
+				<aux x="864.143" y="806.643" name="bo4hg warm"/>
+				<connector uid="103" angle="210.757">
+					<from>kb_warm</from>
+					<to>bo4hg_warm</to>
+				</connector>
+				<connector uid="104" angle="227.343">
+					<from>bor_warm</from>
+					<to>bo4hg_warm</to>
+				</connector>
+				<connector uid="105" angle="62.4472">
+					<from>old_hion_warm</from>
+					<to>bo4hg_warm</to>
+				</connector>
+				<aux x="947.714" y="815.929" name="fg warm"/>
+				<connector uid="106" angle="344.445">
+					<from>bo4hg_warm</from>
+					<to>fg_warm</to>
+				</connector>
+				<connector uid="107" angle="209.32">
+					<from>kw_warm</from>
+					<to>fg_warm</to>
+				</connector>
+				<connector uid="108" angle="36.3649">
+					<from>old_hion_warm</from>
+					<to>fg_warm</to>
+				</connector>
+				<text_box uid="109" x="103.464" y="504.961" width="398.607" height="68.5786">The initial pH might be dependent on the different climate case, because of the different surface T anomaly. Impact is probably not too big though.
+
+These need to fit with the initial values of the surface carbon reservoirs.</text_box>
+				<aux x="1018.54" y="815.929" name="calkg warm"/>
+				<connector uid="110" angle="0">
+					<from>fg_warm</from>
+					<to>calkg_warm</to>
+				</connector>
+				<connector uid="111" angle="47.9049">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>calkg_warm</to>
+				</connector>
+				<aux x="1082" y="815.929" name="gam warm"/>
+				<aux x="974.048" y="1309.79" name="DIC concentration in warm surface layer"/>
+				<connector uid="113" angle="144.451">
+					<from>Warm_surface_ocean_carbon_reservoir</from>
+					<to>DIC_concentration_in_warm_surface_layer</to>
+				</connector>
+				<aux label_side="top" x="956.048" y="1270.26" name="GtC to kmol"/>
+				<connector uid="114" angle="290.171">
+					<from>GtC_to_kmol</from>
+					<to>DIC_concentration_in_warm_surface_layer</to>
+				</connector>
+				<connector uid="115" angle="129.122">
+					<from>
+						<alias uid="47"/>
+					</from>
+					<to>DIC_concentration_in_warm_surface_layer</to>
+				</connector>
+				<aux x="1724.05" y="1389.64" name="DIC concentration in cold surface layer"/>
+				<connector uid="116" angle="14.5308">
+					<from>Cold_surface_ocean_carbon_reservoir</from>
+					<to>DIC_concentration_in_cold_surface_layer</to>
+				</connector>
+				<connector uid="117" angle="7.10434">
+					<from>
+						<alias uid="44"/>
+					</from>
+					<to>DIC_concentration_in_cold_surface_layer</to>
+				</connector>
+				<connector uid="118" angle="271.146">
+					<from>
+						<alias uid="119"/>
+					</from>
+					<to>DIC_concentration_in_cold_surface_layer</to>
+				</connector>
+				<connector uid="120" angle="0">
+					<from>calkg_warm</from>
+					<to>gam_warm</to>
+				</connector>
+				<aux x="1148.23" y="815.929" name="tmp warm"/>
+				<connector uid="121" angle="5.82634">
+					<from>gam_warm</from>
+					<to>tmp_warm</to>
+				</connector>
+				<connector uid="122" angle="284.036">
+					<from>k1_warm</from>
+					<to>tmp_warm</to>
+				</connector>
+				<connector uid="123" angle="267.287">
+					<from>k2_warm</from>
+					<to>tmp_warm</to>
+				</connector>
+				<aux label_side="top" x="868.333" y="1223.41" name="concentration unit"/>
+				<aux x="876.905" y="1286.31" name="warm surface ocean DIC conentration unitless"/>
+				<connector uid="124" angle="166.412">
+					<from>DIC_concentration_in_warm_surface_layer</from>
+					<to>warm_surface_ocean_DIC_conentration_unitless</to>
+				</connector>
+				<connector uid="125" angle="274.892">
+					<from>concentration_unit</from>
+					<to>warm_surface_ocean_DIC_conentration_unitless</to>
+				</connector>
+				<aux x="1832.62" y="1378.21" name="cold surface ocean DIC concentration unitless"/>
+				<connector uid="126" angle="6.00901">
+					<from>DIC_concentration_in_cold_surface_layer</from>
+					<to>cold_surface_ocean_DIC_concentration_unitless</to>
+				</connector>
+				<connector uid="127" angle="282.265">
+					<from>
+						<alias uid="128"/>
+					</from>
+					<to>cold_surface_ocean_DIC_concentration_unitless</to>
+				</connector>
+				<connector uid="129" angle="72.9819">
+					<from>
+						<alias uid="130"/>
+					</from>
+					<to>gam_warm</to>
+				</connector>
+				<aux x="1204.97" y="921.643" name="new hion warm"/>
+				<connector uid="131" angle="325.784">
+					<from>gam_warm</from>
+					<to>new_hion_warm</to>
+				</connector>
+				<connector uid="132" angle="315.183">
+					<from>tmp_warm</from>
+					<to>new_hion_warm</to>
+				</connector>
+				<connector uid="133" angle="289.204">
+					<from>k1_warm</from>
+					<to>new_hion_warm</to>
+				</connector>
+				<flow x="988.68" y="1039.5" name="Change of warm surface ocean pH">
+					<pts>
+						<pt x="1091.29" y="1039.5"/>
+						<pt x="898.071" y="1039.5"/>
+					</pts>
+				</flow>
+				<connector uid="134" angle="208.586">
+					<from>new_hion_warm</from>
+					<to>Change_of_warm_surface_ocean_pH</to>
+				</connector>
+				<connector uid="135" angle="22.4161">
+					<from>Warm_surface_ocean_pH</from>
+					<to>Change_of_warm_surface_ocean_pH</to>
+				</connector>
+				<connector uid="136" angle="0">
+					<from>new_hion_warm</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="137" angle="284.216">
+					<from>k2_warm</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="138" angle="304.735">
+					<from>k1_warm</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="139" angle="296.618">
+					<from>kh_warm</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<aux label_side="top" x="1358.88" y="855.125" name="parts per million"/>
+				<connector uid="140" angle="223.077">
+					<from>parts_per_million</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="141" angle="307.053">
+					<from>
+						<alias uid="130"/>
+					</from>
+					<to>Warm_surface_ocean_pCO2</to>
+				</connector>
+				<aux label_side="bottom" x="1429.54" y="921.643" name="Cold surface\nocean pCO2"/>
+				<stock x="1810.57" y="1026.83" name="Cold surface ocean pH"/>
+				<aux x="1950.48" y="903.31" name="old hion cold"/>
+				<connector uid="142" angle="58.7117">
+					<from>Cold_surface_ocean_pH</from>
+					<to>old_hion_cold</to>
+				</connector>
+				<aux x="1844.48" y="813.125" name="bo4hg cold"/>
+				<connector uid="143" angle="139.609">
+					<from>old_hion_cold</from>
+					<to>bo4hg_cold</to>
+				</connector>
+				<aux x="1784.05" y="813.125" name="fg cold"/>
+				<connector uid="144" angle="180">
+					<from>bo4hg_cold</from>
+					<to>fg_cold</to>
+				</connector>
+				<connector uid="145" angle="151.548">
+					<from>old_hion_cold</from>
+					<to>fg_cold</to>
+				</connector>
+				<aux x="1711.87" y="813.125" name="calkg cold"/>
+				<connector uid="146" angle="180">
+					<from>fg_cold</from>
+					<to>calkg_cold</to>
+				</connector>
+				<aux label_side="bottom" x="1656.76" y="813.125" name="gam cold"/>
+				<connector uid="147" angle="180">
+					<from>calkg_cold</from>
+					<to>gam_cold</to>
+				</connector>
+				<aux x="1595.57" y="813.125" name="tmp cold"/>
+				<connector uid="148" angle="180">
+					<from>gam_cold</from>
+					<to>tmp_cold</to>
+				</connector>
+				<aux x="1497.97" y="921.643" name="new hion cold"/>
+				<connector uid="149" angle="214.349">
+					<from>gam_cold</from>
+					<to>new_hion_cold</to>
+				</connector>
+				<connector uid="150" angle="228.033">
+					<from>tmp_cold</from>
+					<to>new_hion_cold</to>
+				</connector>
+				<flow x="1706.68" y="1026.83" name="Change of cold surface ocean pH">
+					<pts>
+						<pt x="1613.29" y="1026.83"/>
+						<pt x="1788.07" y="1026.83"/>
+					</pts>
+				</flow>
+				<connector uid="151" angle="333.253">
+					<from>new_hion_cold</from>
+					<to>Change_of_cold_surface_ocean_pH</to>
+				</connector>
+				<connector uid="152" angle="162.932">
+					<from>Cold_surface_ocean_pH</from>
+					<to>Change_of_cold_surface_ocean_pH</to>
+				</connector>
+				<connector uid="153" angle="180">
+					<from>new_hion_cold</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="154" angle="316.731">
+					<from>parts_per_million</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="155" angle="260.14">
+					<from>kh_cold</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="156" angle="253.796">
+					<from>k1_cold</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="157" angle="247.013">
+					<from>k2_cold</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="158" angle="223.198">
+					<from>
+						<alias uid="159"/>
+					</from>
+					<to>Cold_surface_ocean_pCO2</to>
+				</connector>
+				<connector uid="160" angle="274.09">
+					<from>k1_cold</from>
+					<to>new_hion_cold</to>
+				</connector>
+				<connector uid="161" angle="286.93">
+					<from>k1_cold</from>
+					<to>tmp_cold</to>
+				</connector>
+				<connector uid="162" angle="272.987">
+					<from>k2_cold</from>
+					<to>tmp_cold</to>
+				</connector>
+				<connector uid="163" angle="343.106">
+					<from>kb_cold</from>
+					<to>bo4hg_cold</to>
+				</connector>
+				<connector uid="164" angle="313.831">
+					<from>kw_cold</from>
+					<to>fg_cold</to>
+				</connector>
+				<connector uid="165" angle="345.127">
+					<from>bor_cold</from>
+					<to>bo4hg_cold</to>
+				</connector>
+				<connector uid="166" angle="122.42">
+					<from>
+						<alias uid="167"/>
+					</from>
+					<to>calkg_cold</to>
+				</connector>
+				<connector uid="168" angle="74.0552">
+					<from>
+						<alias uid="159"/>
+					</from>
+					<to>gam_cold</to>
+				</connector>
+				<aux x="988.679" y="1097" name="Ocean surface pH change time scale"/>
+				<connector uid="169" angle="89.9985">
+					<from>Ocean_surface_pH_change_time_scale</from>
+					<to>Change_of_warm_surface_ocean_pH</to>
+				</connector>
+				<connector uid="170" angle="90">
+					<from>
+						<alias uid="171"/>
+					</from>
+					<to>Change_of_cold_surface_ocean_pH</to>
+				</connector>
+				<aux x="1352.64" y="1211.93" name="Air sea gas exchange coefficient"/>
+				<connector uid="172" angle="243.36">
+					<from>Warm_surface_ocean_pCO2</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="173" angle="300.017">
+					<from>Cold_surface_ocean_pCO2</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="174" angle="354.198">
+					<from>
+						<alias uid="175"/>
+					</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="176" angle="187.237">
+					<from>
+						<alias uid="175"/>
+					</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="177" angle="199.983">
+					<from>Air_sea_gas_exchange_coefficient</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="178" angle="343.142">
+					<from>Air_sea_gas_exchange_coefficient</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="179" angle="211.171">
+					<from>
+						<alias uid="180"/>
+					</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="181" angle="329.744">
+					<from>
+						<alias uid="180"/>
+					</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="182" angle="321.771">
+					<from>
+						<alias uid="183"/>
+					</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="185" angle="219.657">
+					<from>
+						<alias uid="183"/>
+					</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<aux x="95.75" y="71.7503" width="30.5" height="30.5" name="Air sea co2 flux"/>
+				<text_box uid="187" x="126.25" y="1773.75" width="138.5" height="21">Biological carbon pump</text_box>
+				<aux x="105.5" y="1966.75" name="Reference strength of biological carbon pump in high latitude ocean"/>
+				<aux x="105.5" y="2046" name="High latitude carbon\npump sensitivity to global T anomaly"/>
+				<aux x="100" y="2122.5" name="High latitude carbon pump transfer efficiency"/>
+				<aux x="105.5" y="1883.25" name="Reference strength of biological\ncarbon pump in low\nlatitude ocean"/>
+				<aux x="309" y="1883.25" name="Warm surface ocean\ncarbon export to intermediate ocean"/>
+				<connector uid="188" angle="0">
+					<from>Reference_strength_of_biological_carbon_pump_in_low_latitude_ocean</from>
+					<to>Warm_surface_ocean_carbon_export_to_intermediate_ocean</to>
+				</connector>
+				<aux x="309" y="1966.75" name="Cold surface ocean\ncarbon export to intermediate ocean"/>
+				<connector uid="189" angle="6.20345">
+					<from>Reference_strength_of_biological_carbon_pump_in_high_latitude_ocean</from>
+					<to>Cold_surface_ocean_carbon_export_to_intermediate_ocean</to>
+				</connector>
+				<connector uid="190" angle="21.2777">
+					<from>High_latitude_carbon_pump_sensitivity_to_global_T_anomaly</from>
+					<to>Cold_surface_ocean_carbon_export_to_intermediate_ocean</to>
+				</connector>
+				<connector uid="191" angle="17.4748">
+					<from>High_latitude_carbon_pump_transfer_efficiency</from>
+					<to>Cold_surface_ocean_carbon_export_to_intermediate_ocean</to>
+				</connector>
+				<aux x="309" y="2046" name="Cold surface ocean\ncarbon export to\ndeep ocean"/>
+				<connector uid="192" angle="7.76517">
+					<from>High_latitude_carbon_pump_transfer_efficiency</from>
+					<to>Cold_surface_ocean_carbon_export_to_deep_ocean</to>
+				</connector>
+				<connector uid="193" angle="356.73">
+					<from>High_latitude_carbon_pump_sensitivity_to_global_T_anomaly</from>
+					<to>Cold_surface_ocean_carbon_export_to_deep_ocean</to>
+				</connector>
+				<connector uid="194" angle="355.507">
+					<from>Reference_strength_of_biological_carbon_pump_in_high_latitude_ocean</from>
+					<to>Cold_surface_ocean_carbon_export_to_deep_ocean</to>
+				</connector>
+				<flow x="1773.23" y="1910" name="Biological carbon pump C\nexport to the deep ocean">
+					<pts>
+						<pt x="1650.33" y="1442.14"/>
+						<pt x="1827.86" y="1442.14"/>
+						<pt x="1827.86" y="1910"/>
+						<pt x="1706.6" y="1910"/>
+					</pts>
+				</flow>
+				<connector uid="198" angle="156.859">
+					<from>
+						<alias uid="199"/>
+					</from>
+					<to>Biological_carbon_pump_C_export_to_the_deep_ocean</to>
+				</connector>
+				<flow x="977.133" y="1640" name="Biological carbon pump C\nexport from warm surface to intermediate ocean">
+					<pts>
+						<pt x="1046.49" y="1443.57"/>
+						<pt x="894.286" y="1443.57"/>
+						<pt x="894.286" y="1640"/>
+						<pt x="1071.98" y="1640"/>
+					</pts>
+				</flow>
+				<connector uid="200" angle="8.97171">
+					<from>
+						<alias uid="201"/>
+					</from>
+					<to>Biological_carbon_pump_C_export_from_warm_surface_to_intermediate_ocean</to>
+				</connector>
+				<flow label_side="top" x="1353.99" y="1444.29" name="Biological carbon pump C export from cold surface to intermediate ocean">
+					<pts>
+						<pt x="1408.55" y="1444.29"/>
+						<pt x="1311.43" y="1444.29"/>
+						<pt x="1311.43" y="1618.76"/>
+					</pts>
+				</flow>
+				<connector uid="202" angle="39.4529">
+					<from>
+						<alias uid="203"/>
+					</from>
+					<to>Biological_carbon_pump_C_export_from_cold_surface_to_intermediate_ocean</to>
+				</connector>
+				<text_box uid="204" x="103.871" y="176.885" width="349.036" height="32.4643">Initial reservoir values -&gt; Largely calibration parameters, but have to roughly fit with volumes of the individual boxes.</text_box>
+				<text_box uid="205" x="356.429" y="5.89316" width="252.143" height="16.3929">For reference...</text_box>
+				<text_box uid="206" x="84.0952" y="43.393" width="77.9405" height="16.75">Main output</text_box>
+				<aux x="1352.64" y="974.732" name="Atmospheric CO2\nConcentration 1750"/>
+				<aux x="1352.64" y="1057.5" name="Atmospheric CO2 Concentration"/>
+				<connector uid="208" angle="291.299">
+					<from>Atmospheric_CO2_Concentration_1750</from>
+					<to>Atmospheric_CO2_Concentration</to>
+				</connector>
+				<connector uid="210" angle="217.934">
+					<from>Atmospheric_CO2_Concentration</from>
+					<to>Low_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<connector uid="211" angle="328.311">
+					<from>Atmospheric_CO2_Concentration</from>
+					<to>High_latitude_ocean_air_sea_carbon_uptake</to>
+				</connector>
+				<aux x="1384" y="108" name="Surface Temperature Anomaly"/>
+				<connector uid="212" angle="190.886">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Warm_surface_ocean_temperature</to>
+				</connector>
+				<connector uid="213" angle="234.349">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Warm_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<connector uid="214" angle="40.6013">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Cold_surface_ocean_temperature</to>
+				</connector>
+				<connector uid="215" angle="356.737">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Cold_surface_ocean_alkalinity_unitless</to>
+				</connector>
+				<connector uid="216" angle="344.931">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Cold_surface_ocean_salinity_unitless</to>
+				</connector>
+				<connector uid="217" angle="251.035">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Warm_surface_ocean_salinity_unitless</to>
+				</connector>
+				<connector uid="218" angle="264.957">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Cold_surface_ocean_carbon_export_to_intermediate_ocean</to>
+				</connector>
+				<connector uid="219" angle="265.983">
+					<from>Surface_Temperature_Anomaly</from>
+					<to>Cold_surface_ocean_carbon_export_to_deep_ocean</to>
+				</connector>
+				<aux x="1269.73" y="1034" name="selected climate case"/>
+				<connector uid="220" angle="9.17516">
+					<from>selected_climate_case</from>
+					<to>Atmospheric_CO2_Concentration</to>
+				</connector>
+				<stacked_container uid="221" x="980.05" y="2305">
+					<table isee:start_time="10000" isee:stop_time="10000" interval="1" report_balances="beginning" report_flows="summed" width="350" height="250" comparative="true" isee:export_name="Stocks for initialisation" isee:mark_for_export="true">
+						<item type="time"/>
+						<item>
+							<entity name="Cold_surface_ocean_carbon_reservoir[*]"/>
+						</item>
+						<item>
+							<entity name="Cold_surface_ocean_pH[*]"/>
+						</item>
+						<item>
+							<entity name="Deep_ocean_ocean_carbon_reservoir[*]"/>
+						</item>
+						<item>
+							<entity name="Intermediate_depth_ocean_carbon_reservoir[*]"/>
+						</item>
+						<item>
+							<entity name="Warm_surface_ocean_carbon_reservoir[*]"/>
+						</item>
+						<item>
+							<entity name="Warm_surface_ocean_pH[*]"/>
+						</item>
+					</table>
+				</stacked_container>
+				<alias font_style="italic" uid="7" x="1391.67" y="1669.33" width="18" height="18">
+					<of>Ocean_overturning_strength</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="top" uid="20" x="224.786" y="1603.64" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>from_Sv_to_cubic_metre_per_year</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="left" uid="23" x="1119.2" y="1526.41" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Intermediate_to_warm_surface_ocean_mixing_strength</of>
+				</alias>
+				<alias font_style="italic" label_side="top" uid="25" x="1676.54" y="1563.78" width="18" height="18">
+					<of>Cold_surface_to_deep_ocean_mixing_strength</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="40" x="1391.67" y="1798.83" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Volume_of_deep_ocean_reservoir</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="42" x="1694.54" y="1685.9" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Volume_of_deep_ocean_reservoir</of>
+				</alias>
+				<alias font_style="italic" uid="44" x="1554" y="1536.83" width="18" height="18">
+					<of>Volume_of_cold_surface_ocean_reservoir</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="left" uid="47" x="1119.2" y="1490.33" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Volume_of_warm_surface_ocean_reservoir</of>
+				</alias>
+				<alias font_style="italic" uid="49" x="1038.81" y="1559.61" width="18" height="18">
+					<of>Volume_of_intermediate_ocean_reservoir</of>
+				</alias>
+				<alias font_style="italic" label_side="top" uid="112" x="923.714" y="901.929" width="18" height="18">
+					<of>Warm_surface_ocean_alkalinity_unitless</of>
+				</alias>
+				<alias font_style="italic" label_side="top" uid="119" x="1727.19" y="1337.79" width="18" height="18">
+					<of>GtC_to_kmol</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="top" uid="128" x="1812.9" y="1319.93" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>concentration_unit</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="top" uid="130" x="1055" y="901.929" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>warm_surface_ocean_DIC_conentration_unitless</of>
+				</alias>
+				<alias font_style="italic" label_side="top" uid="167" x="1775.05" y="907.69" width="18" height="18">
+					<of>Cold_surface_ocean_alkalinity_unitless</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="top" uid="159" x="1647.76" y="907.69" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>cold_surface_ocean_DIC_concentration_unitless</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="171" x="1697.68" y="1085" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Ocean_surface_pH_change_time_scale</of>
+				</alias>
+				<alias font_style="italic" uid="180" x="1343.64" y="1152.21" width="18" height="18">
+					<of>GtC_to_kmol</of>
+				</alias>
+				<alias font_style="italic" uid="183" x="1343.64" y="1105.93" width="18" height="18">
+					<of>Ocean_surface_area</of>
+				</alias>
+				<alias font_style="italic" uid="175" x="1343.64" y="1264.64" width="18" height="18">
+					<of>Warm_surface_ocean_area_fraction</of>
+				</alias>
+				<alias font_style="italic" uid="199" x="1884.57" y="1952.43" width="18" height="18">
+					<of>Cold_surface_ocean_carbon_export_to_deep_ocean</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="201" x="805.286" y="1656.71" width="18" height="18">
+					<shape type="circle" radius="18"/>
+					<of>Warm_surface_ocean_carbon_export_to_intermediate_ocean</of>
+				</alias>
+				<alias font_style="italic" uid="203" x="1322.43" y="1472.33" width="18" height="18">
+					<of>Cold_surface_ocean_carbon_export_to_intermediate_ocean</of>
+				</alias>
+			</view>
+		</views>
+	</model>
+	<macro name="PCTILE5">
+		<eqn>out</eqn>
+		<parm>in</parm>
+		<variables>
+			<aux name="in" access="input">
+				<eqn>1</eqn>
+				<units>dmnl</units>
+			</aux>
+			<aux name="out" access="output">
+				<eqn>IF in = 1 THEN 0
+ELSE IF in = 2 THEN 25
+ELSE IF in = 3 THEN 50
+ELSE IF in = 4 THEN 75
+ELSE IF in = 5 THEN 100
+ELSE 0</eqn>
+				<units>dmnl</units>
+			</aux>
+		</variables>
+		<view isee:show_pages="false" background="white" page_width="768" page_height="588" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<stock color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
+					<shape type="rectangle" width="45" height="35"/>
+				</stock>
+				<flow color="blue" background="white" font_color="blue" font_size="11pt" label_side="bottom">
+					<shape type="circle" radius="18"/>
+				</flow>
+				<isee:placeholder color="#228B22" background="white" font_color="#228B22" font_size="11pt" label_side="bottom"/>
+				<module color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
+					<shape type="rectangle" width="67" height="55"/>
+				</module>
+				<aux color="blue" background="white" font_color="blue" font_size="11pt" label_side="bottom">
+					<shape type="circle" radius="18"/>
+				</aux>
+				<group color="red" background="white" font_color="red" font_size="11pt"/>
+				<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+				<graph color="black" background="white" font_size="18pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="14pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="12pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1"/>
+						<isee:series_style color="fuchsia" thickness="1"/>
+						<isee:series_style color="#008F44" thickness="1"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1"/>
+						<isee:series_style color="#0CA0FF" thickness="1"/>
+						<isee:series_style color="lime" thickness="1"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1"/>
+						<isee:series_style color="#F586FF" thickness="1"/>
+						<isee:series_style color="black" thickness="1"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<aux font_weight="bold" x="192" y="278" name="in"/>
+			<aux x="279" y="278" name="out"/>
+			<connector uid="1" angle="9.16235">
+				<from>in</from>
+				<to>out</to>
+			</connector>
+		</view>
+	</macro>
+</xmile>
+
