@@ -286,7 +286,7 @@
 				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
 				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 			</style>
-			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="5" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="5" isee:scroll_x="242" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -31072,7 +31072,7 @@
 					<dim name="Run"/>
 				</dimensions>
 				<element subscript="1">
-					<eqn>5</eqn>
+					<eqn>1</eqn>
 				</element>
 				<units>dmnl</units>
 			</aux>
@@ -31126,7 +31126,7 @@
 				<dimensions>
 					<dim name="Run"/>
 				</dimensions>
-				<eqn>Amount_of_carbon_in_the_deep_ocean_in_spinup * scaling_of_Volume_of_deep_ocean_reservoir</eqn>
+				<eqn>Amount_of_carbon_in_the_deep_ocean_in_spinup_with_delta* scaling_of_Volume_of_deep_ocean_reservoir</eqn>
 				<range min="2200" max="2240"/>
 				<units>GtC</units>
 			</aux>
@@ -31151,6 +31151,15 @@
 				</dimensions>
 				<eqn>Volume_of_deep_ocean_reservoir/ default_Volume_of_deep_ocean_reservoir</eqn>
 				<units>dmnl</units>
+			</aux>
+			<aux name="deep ocean carbon delta">
+				<eqn>2500</eqn>
+				<units>GtC</units>
+			</aux>
+			<aux name="Amount of carbon in the\ndeep ocean in spinup with delta">
+				<eqn>Amount_of_carbon_in_the_deep_ocean_in_spinup + deep_ocean_carbon_delta</eqn>
+				<range min="28000" max="31000"/>
+				<units>GtC</units>
 			</aux>
 		</variables>
 		<views>
@@ -31201,7 +31210,7 @@
 				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
 				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 			</style>
-			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="4" isee:scroll_x="255" isee:scroll_y="1475" zoom="80" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="4" isee:scroll_x="95" isee:scroll_y="1890" zoom="80" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -31252,7 +31261,7 @@
 				</flow>
 				<stock label_side="center" x="1071.98" y="1618.76" width="372.143" height="34.4286" name="Intermediate depth\nocean carbon reservoir"/>
 				<aux x="239.75" y="322.5" name="Amount of carbon in the\nintermediate depth\nocean in spinup"/>
-				<aux x="239.75" y="411.071" name="Amount of carbon in the\ndeep ocean in spinup"/>
+				<aux x="90.714" y="411.161" name="Amount of carbon in the\ndeep ocean in spinup"/>
 				<stock label_side="center" x="1051.03" y="1845.9" width="655.571" height="108.214" name="Deep ocean\nocean carbon reservoir"/>
 				<flow label_side="bottom" x="1506.64" y="1651.33" name="Downward transport of carbon via the overturning circulation">
 					<pts>
@@ -32371,13 +32380,23 @@ These need to fit with the initial values of the surface carbon reservoirs.</tex
 					<from>scaling_of_Volume_of_deep_ocean_reservoir</from>
 					<to>adjusted_Amount_of_carbon_in_the_deep_ocean_in_spinup</to>
 				</connector>
-				<connector uid="258" angle="17.5041">
-					<from>Amount_of_carbon_in_the_deep_ocean_in_spinup</from>
-					<to>adjusted_Amount_of_carbon_in_the_deep_ocean_in_spinup</to>
-				</connector>
 				<connector uid="269" angle="4.07168">
 					<from>Volume_of_deep_ocean_reservoir</from>
 					<to>scaling_of_Volume_of_deep_ocean_reservoir</to>
+				</connector>
+				<aux x="196.25" y="458" name="deep ocean carbon delta"/>
+				<aux x="239.75" y="396.161" name="Amount of carbon in the\ndeep ocean in spinup with delta"/>
+				<connector uid="272" angle="53.8733">
+					<from>deep_ocean_carbon_delta</from>
+					<to>Amount_of_carbon_in_the_deep_ocean_in_spinup_with_delta</to>
+				</connector>
+				<connector uid="273" angle="26.1027">
+					<from>Amount_of_carbon_in_the_deep_ocean_in_spinup</from>
+					<to>Amount_of_carbon_in_the_deep_ocean_in_spinup_with_delta</to>
+				</connector>
+				<connector uid="274" angle="5.92938">
+					<from>Amount_of_carbon_in_the_deep_ocean_in_spinup_with_delta</from>
+					<to>adjusted_Amount_of_carbon_in_the_deep_ocean_in_spinup</to>
 				</connector>
 				<alias font_style="italic" uid="7" x="1391.67" y="1669.33" width="18" height="18">
 					<of>Ocean_overturning_strength</of>
