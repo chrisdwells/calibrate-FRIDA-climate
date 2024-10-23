@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# cribbed from fair calibrate
+# cribbed from fair calibrate. feed these into Ocean_spinup_start
 
 import os
 
@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-samples = int(os.getenv("PRIOR_SAMPLES"))
+ocean_samples = int(os.getenv("OCEAN_SPINUP_SAMPLES"))
 
 ocean_variables = {
     "Ocean.Depth of warm surface ocean layer":[50,500],
@@ -33,7 +33,7 @@ for o_i, ocean_var in enumerate(ocean_variables):
     param_dict[ocean_var] = scipy.stats.uniform.rvs(
         ocean_variables[ocean_var][0],
         ocean_variables[ocean_var][1] - ocean_variables[ocean_var][0],
-        size=samples,
+        size=ocean_samples,
         random_state=3729329 + 1000*o_i,
     )
     
@@ -41,6 +41,6 @@ for o_i, ocean_var in enumerate(ocean_variables):
 df = pd.DataFrame(param_dict, columns=param_dict.keys())
 
 df.to_csv(
-    f"../data/spinup_input/ocean_spinup_params_{samples}.csv",
+    f"../data/spinup_input/ocean_spinup_params_{ocean_samples}.csv",
     index=False,
 )

@@ -3,7 +3,7 @@
 
 # cribbed from fair calibrate
 # this is for the ocean params which don't affect the spin-up; they only get
-# varied in the prior ensemble.
+# varied in the prior ensemble. because of this, we use the full sample number 
 
 import os
 
@@ -17,10 +17,15 @@ load_dotenv()
 samples = int(os.getenv("PRIOR_SAMPLES"))
 
 ocean_variables = {
-    "Ocean.Warm surface ocean alkalinity sensitivity to global T anomaly":[0.5,3.0],
-    "Ocean.Cold surface ocean alkalinity sensitivity to global T anomaly":[0.5,3.0],
-    "Ocean.High latitude carbon pump sensitivity to global T anomaly":[-5,0],
+    "Ocean.Warm surface ocean alkalinity sensitivity to global T anomaly":[-4e-6, -1e-6],
+    "Ocean.Cold surface ocean alkalinity sensitivity to global T anomaly":[-3e-5, -5e-6],
+    "Ocean.High latitude carbon pump sensitivity to global T anomaly":[-0.5,0],
+    "Ocean.Warm surface ocean temperature sensitivity to global T anomaly":[0.4, 1.0],
+    "Ocean.Cold surface ocean temperature sensitivity to global T anomaly":[0.3, 1.0],
+    "Ocean.Warm surface ocean salinity sensitivity to global T anomaly":[-0.04, -0.01],
+    "Ocean.Cold surface ocean salinity sensitivity to global T anomaly":[-0.3, -0.05],
     }
+
 
 param_dict = {}
 

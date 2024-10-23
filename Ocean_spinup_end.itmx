@@ -9,7 +9,7 @@
 	</header>
 	<sim_specs isee:sim_duration="0" isee:run_prefix="Run" isee:simulation_delay="0" isee:restore_on_start="false" method="Euler" time_units="Year" isee:instantaneous_flows="false" isee:ignore_module_errors="false" isee:strict_units="false" isee:loop_scores="false" isee:loop_exhaustive_allowed="1000">
 		<start>0</start>
-		<stop>15000</stop>
+		<stop>8000</stop>
 		<dt reciprocal="true">1</dt>
 	</sim_specs>
 	<dimensions>
@@ -45,6 +45,9 @@
 	<data>
 		<export frequency="on_demand" resource="r../data/spinup_output/Ocean_spinup_output_end.csv" precomputed="false" isee:format="numbers">
 			<table name="Stocks for initialisation" use_settings="true"/>
+		</export>
+		<export frequency="on_demand" resource="r../data/spinup_output/Ocean_spinup_output_end_tests.csv" precomputed="false" isee:format="numbers">
+			<table name="Spinup tests" use_settings="true"/>
 		</export>
 		<import frequency="on_demand" isee:overwrite="true" resource="r../data/spinup_input/ocean_spinup_params_1000.csv"/>
 		<import frequency="on_demand" isee:overwrite="true" resource="r../data/spinup_input/co2_1750_1000.csv"/>
@@ -287,7 +290,7 @@
 				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
 				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 			</style>
-			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="5" isee:scroll_x="200" isee:scroll_y="118" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="5" isee:scroll_x="200" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -49162,7 +49165,7 @@
 				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
 				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 			</style>
-			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="4" isee:scroll_y="491" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<view isee:show_pages="false" background="white" page_width="1123" page_height="793" isee:page_cols="3" isee:page_rows="4" isee:scroll_y="1676.25" zoom="80" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="11pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -50164,7 +50167,7 @@ These need to fit with the initial values of the surface carbon reservoirs.</tex
 				</connector>
 				<aux x="340.557" y="77.5" name="selected climate case"/>
 				<stacked_container uid="221" x="980.05" y="2305">
-					<table isee:start_time="100" isee:stop_time="100" interval="1" report_balances="beginning" report_flows="summed" width="350" height="250" comparative="true" isee:export_name="Stocks for initialisation" isee:mark_for_export="true">
+					<table isee:start_time="8000" isee:stop_time="8000" interval="1" report_balances="beginning" report_flows="instantaneous" width="350" height="250" comparative="true" isee:export_name="Stocks for initialisation" isee:mark_for_export="true">
 						<item type="time"/>
 						<item>
 							<entity name="Cold_surface_ocean_carbon_reservoir[*]"/>
@@ -50252,10 +50255,15 @@ These need to fit with the initial values of the surface carbon reservoirs.</tex
 				<aux x="554.251" y="322.75" name="Initial Intermediate depth\nocean carbon reservoir"/>
 				<aux x="487.861" y="248.429" name="Initial Warm surface\nocean carbon reservoir"/>
 				<aux x="554.251" y="411.321" name="Initial Deep ocean\nocean carbon reservoir"/>
-				<stacked_container uid="270" x="585" y="2780">
-					<table width="350" height="250">
+				<stacked_container uid="271" x="600.833" y="2305">
+					<table isee:start_time="7900" isee:stop_time="8000" interval="1" report_balances="beginning" report_flows="instantaneous" width="350" height="250" comparative="true" isee:export_name="Spinup tests" isee:mark_for_export="true">
 						<item type="time"/>
-						<item/>
+						<item>
+							<entity name="Air_sea_co2_flux[*]"/>
+						</item>
+						<item>
+							<entity name="Deep_ocean_ocean_carbon_reservoir[*]"/>
+						</item>
 					</table>
 				</stacked_container>
 				<alias font_style="italic" uid="7" x="1391.67" y="1669.33" width="18" height="18">

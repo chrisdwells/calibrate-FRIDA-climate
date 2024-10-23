@@ -2,5 +2,4 @@
 plots/
 data/priors_input/*csv
 data/spinup_input/*csv
-*csv
 scripts/*plot.py
