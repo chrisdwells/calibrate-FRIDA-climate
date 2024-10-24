@@ -137,7 +137,7 @@ params_ar6, cov = curve_fit(
 df_params = pd.DataFrame(param_fits, index=["aci_scale", "Sulfur"]).T
 
 df_params.to_csv(
-    f"../data/external/forcing/aerosol_cloud_{samples}.csv"
+    "../data/external/forcing/aerosol_cloud.csv"
 )
 
 print("Correlation coefficients between aci parameters")
