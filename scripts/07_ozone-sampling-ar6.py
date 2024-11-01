@@ -11,13 +11,13 @@
 import copy
 import os
 
-import matplotlib.pyplot as pl
+# import matplotlib.pyplot as pl
 import numpy as np
 import pandas as pd
 import pooch
 import scipy.stats
 from dotenv import load_dotenv
-from fair import __version__
+# from fair import __version__
 from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 

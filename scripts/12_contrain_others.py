@@ -22,8 +22,6 @@ load_dotenv()
 samples = int(os.getenv("PRIOR_SAMPLES"))
 output_ensemble_size = int(os.getenv("POSTERIOR_SAMPLES"))
 
-samples = 10000
-
 NINETY_TO_ONESIGMA = scipy.stats.norm.ppf(0.95)
 
 valid_temp_flux = np.loadtxt(
@@ -42,7 +40,7 @@ weights_51yr = np.ones(52)
 weights_51yr[0] = 0.5
 weights_51yr[-1] = 0.5
 
-df_temp = pd.read_csv("../data/priors_output/billy_10k/priors_temperature.csv")
+df_temp = pd.read_csv("../data/priors_output/priors_temperature.csv")
 
 temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values[:,1:]
 temp_in = np.average(temp_hist[145:166, :], weights=weights_20yr, axis=0
@@ -58,7 +56,7 @@ ohc_data = df_ohc.drop(columns='Year').values
 ohc_in = (ohc_data[1,:] - ohc_data[0,:])*1000 # units
 
 
-df_aer = pd.read_csv("../data/priors_output/billy_10k/priors_aerosols.csv")
+df_aer = pd.read_csv("../data/priors_output/priors_aerosols.csv")
 
 faci_in = np.full(samples, np.nan)
 fari_in = np.full(samples, np.nan)
@@ -72,18 +70,23 @@ for i in np.arange(samples):
     f'Aerosol Forcing.Effective Radiative Forcing from Aerosol-Radiation Interactions[{i+1}]'])
     
 
-df_co2 = pd.read_csv("../data/priors_output/billy_10k/priors_CO2.csv")
+df_co2 = pd.read_csv("../data/priors_output/priors_CO2.csv")
 co2_in = df_co2.drop(columns='Year').values[0,:]
 
 
 
-df_ebm = pd.read_csv(f"../data/external/samples_for_priors/climate_response_ebm3_{samples}.csv")
-kappa1_data = df_ebm['kappa1'].values
+# df_ebm = pd.read_csv(f"../data/external/samples_for_priors/climate_response_ebm3_{samples}.csv")
+# kappa1_data = df_ebm['kappa1'].values
 
-df_forcing_scaling = pd.read_csv(f"../data/external/samples_for_priors/forcing_scaling_{samples}.csv")
-co2_scale_data = df_forcing_scaling['scale CO2'].values
+# df_forcing_scaling = pd.read_csv(f"../data/external/samples_for_priors/forcing_scaling_{samples}.csv")
+# co2_scale_data = df_forcing_scaling['scale CO2'].values
 
-ecs_in = 3.93*co2_scale_data/kappa1_data
+# ecs_in = 3.93*co2_scale_data/kappa1_data
+
+df_ecs_tcr = pd.read_csv(f"../data/external/samples_for_priors/ecs_tcs_{samples}.csv")
+
+ecs_in = df_ecs_tcr['ecs']
+tcr_in = df_ecs_tcr['tcr']
 
 faer_in = fari_in + faci_in
 
@@ -100,6 +103,9 @@ def opt(x, q05_desired, q50_desired, q95_desired):
 samples_dict = {}
 samples_dict["ECS"] = scipy.stats.skewnorm.rvs(
     8.82185594, loc=1.95059779, scale=1.55584604, size=10**5, random_state=91603
+)
+samples["TCR"] = scipy.stats.norm.rvs(
+    loc=1.8, scale=0.6 / NINETY_TO_ONESIGMA, size=10**5, random_state=18196
 )
 samples_dict["OHC"] = scipy.stats.norm.rvs(
     loc=396 / 0.91, scale=67 / 0.91, size=10**5, random_state=43178
@@ -127,7 +133,8 @@ samples_dict["CO2 concentration"] = scipy.stats.norm.rvs(
 ar_distributions = {}
 for constraint in [
     "ECS",
-    # "OHC",
+    "TCR",
+    "OHC",
     "temperature 1995-2014",
     "ERFari",
     "ERFaci",
@@ -143,7 +150,8 @@ for constraint in [
 accepted = pd.DataFrame(
     {
         "ECS": ecs_in[valid_temp_flux],
-        # "OHC": ohc_in[valid_temp_flux] / 1e21,
+        "TCR": tcr_in[valid_temp_flux],
+        "OHC": ohc_in[valid_temp_flux] / 1e21,
         "temperature 1995-2014": temp_in[valid_temp_flux],
         "ERFari": fari_in[valid_temp_flux],
         "ERFaci": faci_in[valid_temp_flux],
@@ -277,15 +285,20 @@ prior_ecs = scipy.stats.gaussian_kde(ecs_in)
 post1_ecs = scipy.stats.gaussian_kde(ecs_in[valid_temp_flux])
 post2_ecs = scipy.stats.gaussian_kde(draws[0]["ECS"])
 
+target_tcr = scipy.stats.gaussian_kde(samples["TCR"])
+prior_tcr = scipy.stats.gaussian_kde(tcr_in)
+post1_tcr = scipy.stats.gaussian_kde(tcr_in[valid_temp_flux])
+post2_tcr = scipy.stats.gaussian_kde(draws[0]["TCR"])
+
 target_temp = scipy.stats.gaussian_kde(samples_dict["temperature 1995-2014"])
 prior_temp = scipy.stats.gaussian_kde(temp_in)
 post1_temp = scipy.stats.gaussian_kde(temp_in[valid_temp_flux])
 post2_temp = scipy.stats.gaussian_kde(draws[0]["temperature 1995-2014"])
 
-# target_ohc = scipy.stats.gaussian_kde(samples_dict["OHC"])
-# prior_ohc = scipy.stats.gaussian_kde(ohc_in / 1e21)
-# post1_ohc = scipy.stats.gaussian_kde(ohc_in[valid_temp_flux] / 1e21)
-# post2_ohc = scipy.stats.gaussian_kde(draws[0]["OHC"])
+target_ohc = scipy.stats.gaussian_kde(samples_dict["OHC"])
+prior_ohc = scipy.stats.gaussian_kde(ohc_in / 1e21)
+post1_ohc = scipy.stats.gaussian_kde(ohc_in[valid_temp_flux] / 1e21)
+post2_ohc = scipy.stats.gaussian_kde(draws[0]["OHC"])
 
 target_aer = scipy.stats.gaussian_kde(samples_dict["ERFaer"])
 prior_aer = scipy.stats.gaussian_kde(faer_in)
@@ -346,35 +359,35 @@ ax[0, 0].set_xlabel("°C")
 
 start = 0
 stop = 4
-# ax[0, 1].plot(
-#     np.linspace(start, stop, 1000),
-#     prior_tcr(np.linspace(start, stop, 1000)),
-#     color=colors["prior"],
-#     label="Prior",
-# )
-# ax[0, 1].plot(
-#     np.linspace(start, stop, 1000),
-#     post1_tcr(np.linspace(start, stop, 1000)),
-#     color=colors["post1"],
-#     label="Temp+Flux RMSE",
-# )
-# ax[0, 1].plot(
-#     np.linspace(start, stop, 1000),
-#     post2_tcr(np.linspace(start, stop, 1000)),
-#     color=colors["post2"],
-#     label="All constraints",
-# )
-# ax[0, 1].plot(
-#     np.linspace(start, stop, 1000),
-#     target_tcr(np.linspace(start, stop, 1000)),
-#     color=colors["target"],
-#     label="Target",
-# )
-# ax[0, 1].set_xlim(start, stop)
-# ax[0, 1].set_ylim(0, 1.4)
-# ax[0, 1].set_title("TCR")
-# ax[0, 1].set_yticklabels([])
-# ax[0, 1].set_xlabel("°C")
+ax[0, 1].plot(
+    np.linspace(start, stop, 1000),
+    prior_tcr(np.linspace(start, stop, 1000)),
+    color=colors["prior"],
+    label="Prior",
+)
+ax[0, 1].plot(
+    np.linspace(start, stop, 1000),
+    post1_tcr(np.linspace(start, stop, 1000)),
+    color=colors["post1"],
+    label="Temp+Flux RMSE",
+)
+ax[0, 1].plot(
+    np.linspace(start, stop, 1000),
+    post2_tcr(np.linspace(start, stop, 1000)),
+    color=colors["post2"],
+    label="All constraints",
+)
+ax[0, 1].plot(
+    np.linspace(start, stop, 1000),
+    target_tcr(np.linspace(start, stop, 1000)),
+    color=colors["target"],
+    label="Target",
+)
+ax[0, 1].set_xlim(start, stop)
+ax[0, 1].set_ylim(0, 1.4)
+ax[0, 1].set_title("TCR")
+ax[0, 1].set_yticklabels([])
+ax[0, 1].set_xlabel("°C")
 
 start = 0.5
 stop = 1.3
@@ -537,37 +550,37 @@ ax[2, 0].set_title("CO$_2$ concentration")
 ax[2, 0].set_yticklabels([])
 ax[2, 0].set_xlabel("ppm, 2014")
 
-# start = 0
-# stop = 800
-# ax[2, 1].plot(
-#     np.linspace(start, stop),
-#     target_ohc(np.linspace(start, stop)),
-#     color=colors["target"],
-#     label="Target",
-# )
-# ax[2, 1].plot(
-#     np.linspace(start, stop),
-#     prior_ohc(np.linspace(start, stop)),
-#     color=colors["prior"],
-#     label="Prior",
-# )
-# ax[2, 1].plot(
-#     np.linspace(start, stop),
-#     post1_ohc(np.linspace(start, stop)),
-#     color=colors["post1"],
-#     label="Temp+Flux RMSE",
-# )
-# ax[2, 1].plot(
-#     np.linspace(start, stop),
-#     post2_ohc(np.linspace(start, stop)),
-#     color=colors["post2"],
-#     label="All constraints",
-# )
-# ax[2, 1].set_xlim(start, stop)
-# ax[2, 1].set_ylim(0, 0.006)
-# ax[2, 1].set_title("Ocean heat content change")
-# ax[2, 1].set_yticklabels([])
-# ax[2, 1].set_xlabel("ZJ, 2018 minus 1971")
+start = 0
+stop = 800
+ax[2, 1].plot(
+    np.linspace(start, stop),
+    target_ohc(np.linspace(start, stop)),
+    color=colors["target"],
+    label="Target",
+)
+ax[2, 1].plot(
+    np.linspace(start, stop),
+    prior_ohc(np.linspace(start, stop)),
+    color=colors["prior"],
+    label="Prior",
+)
+ax[2, 1].plot(
+    np.linspace(start, stop),
+    post1_ohc(np.linspace(start, stop)),
+    color=colors["post1"],
+    label="Temp+Flux RMSE",
+)
+ax[2, 1].plot(
+    np.linspace(start, stop),
+    post2_ohc(np.linspace(start, stop)),
+    color=colors["post2"],
+    label="All constraints",
+)
+ax[2, 1].set_xlim(start, stop)
+ax[2, 1].set_ylim(0, 0.006)
+ax[2, 1].set_title("Ocean heat content change")
+ax[2, 1].set_yticklabels([])
+ax[2, 1].set_xlabel("ZJ, 2018 minus 1971")
 
 
 fig.tight_layout()
@@ -600,9 +613,9 @@ print(
     "Aerosol ERF 2005-2014 rel. 1750:",
     np.percentile(draws[0]["ERFaci"] + draws[0]["ERFari"], (5, 50, 95)),
 )
-# print(
-#     "OHC change 2018 rel. 1971*:", np.percentile(draws[0]["OHC"] * 0.91, (16, 50, 84))
-# )
+print(
+    "OHC change 2018 rel. 1971*:", np.percentile(draws[0]["OHC"] * 0.91, (16, 50, 84))
+)
 
 print("*likely range")
 

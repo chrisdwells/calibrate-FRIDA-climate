@@ -2,6 +2,12 @@
 # coding: utf-8
 
 """Climate response calibrations"""
+
+
+# For FRIDA, get ECS and TCR from the FaIR EBM
+# note this doesn't give the same as 3.93*co2_scale_data/kappa1_data...
+
+
 # The purpose here is to provide correlated calibrations to the climate response in
 # CMIP6 models.
 #
@@ -22,6 +28,13 @@ from dotenv import load_dotenv
 from fair.energy_balance_model import EnergyBalanceModel
 from tqdm import tqdm
 
+from fair import FAIR
+from fair.io import read_properties
+from fair.interface import fill, initialise
+
+from fair.energy_balance_model import (
+    multi_ebm,
+)
 load_dotenv()
 
 samples = int(os.getenv("PRIOR_SAMPLES"))
@@ -92,7 +105,7 @@ for im, model in enumerate(models):
     params[r"$\sigma_{\eta}$"][im] = df.loc[condition, "sigma_eta"].values[0]
     params[r"$\sigma_{\xi}$"][im] = df.loc[condition, "sigma_xi"].values[0]
     params[r"$F_{4\times}$"][im] = df.loc[condition, "F_4xCO2"].values[0]
-
+    
 params = pd.DataFrame(params)
 print(params.corr())
 
@@ -189,3 +202,83 @@ print(
 # what we do want to do is to scale the variability in 4xCO2 (correlated with the other
 # EBM parameters)
 # to feed into the effective radiative forcing scaling factor.
+
+f = FAIR()
+
+
+f.define_time(1750, 1752, 1)
+
+scenarios = ['ssp119']
+f.define_scenarios(scenarios)
+
+f.define_configs(list(range(samples)))
+
+species, properties = read_properties()
+
+f.define_species(species, properties)
+
+f.allocate()
+f.fill_species_configs()
+f.fill_from_rcmip()
+
+initialise(f.concentration, f.species_configs['baseline_concentration'])
+initialise(f.forcing, 0)
+initialise(f.temperature, 0)
+initialise(f.cumulative_emissions, 0)
+initialise(f.airborne_emissions, 0)
+
+capacities = [4.22335014, 16.5073541, 86.1841127]
+kappas = [1.31180598, 2.61194068, 0.92986733]
+epsilon = 1.29020599
+fill(f.climate_configs['ocean_heat_capacity'], capacities)
+fill(f.climate_configs['ocean_heat_transfer'], kappas)
+fill(f.climate_configs['deep_ocean_efficacy'], epsilon)
+
+
+
+fill(
+    f.climate_configs["ocean_heat_capacity"],
+    np.array([ebm_sample_df["c1"], ebm_sample_df["c2"], ebm_sample_df["c3"]]).T,
+)
+fill(
+    f.climate_configs["ocean_heat_transfer"],
+    np.array([ebm_sample_df["kappa1"], ebm_sample_df["kappa2"], ebm_sample_df["kappa3"]]).T,
+)
+fill(f.climate_configs["deep_ocean_efficacy"], ebm_sample_df["epsilon"])
+fill(f.climate_configs["gamma_autocorrelation"], ebm_sample_df["gamma"])
+# fill(f.climate_configs["sigma_eta"], ebm_sample_df["sigma_eta"])
+# fill(f.climate_configs["sigma_xi"], ebm_sample_df["sigma_xi"])
+# fill(f.climate_configs["seed"], ebm_sample_df["seed"])
+# fill(f.climate_configs["stochastic_run"], True)
+# fill(f.climate_configs["use_seed"], True)
+fill(f.climate_configs["forcing_4co2"], ebm_sample_df["F_4xCO2"])
+
+f.run()
+
+
+ebms = multi_ebm(
+    f.configs,
+    ocean_heat_capacity=f.climate_configs["ocean_heat_capacity"],
+    ocean_heat_transfer=f.climate_configs["ocean_heat_transfer"],
+    deep_ocean_efficacy=f.climate_configs["deep_ocean_efficacy"],
+    # stochastic_run=f.climate_configs["stochastic_run"],
+    # sigma_eta=f.climate_configs["sigma_eta"],
+    # sigma_xi=f.climate_configs["sigma_xi"],
+    # gamma_autocorrelation=f.climate_configs["gamma_autocorrelation"],
+    # seed=f.climate_configs["seed"],
+    # use_seed=f.climate_configs["use_seed"],
+    forcing_4co2=f.climate_configs["forcing_4co2"],
+    timestep=f.timestep,
+    timebounds=f.timebounds,
+)
+
+ecs_tcr_dict = {}
+ecs_tcr_dict['ecs'] = ebms.ecs
+ecs_tcr_dict['tcr'] = ebms.tcr
+
+df_ecs_tcr = pd.DataFrame(data=ecs_tcr_dict, columns=ecs_tcr_dict.keys())
+
+df_ecs_tcr.to_csv(
+    f"../data/external/samples_for_priors/ecs_tcs_{samples}.csv",
+    index=False,
+)

@@ -15,7 +15,6 @@ load_dotenv()
 print("Doing RMSE constraint...")
 
 samples = int(os.getenv("PRIOR_SAMPLES"))
-samples = 10000
 
 def rmse(obs, mod):
     return np.sqrt(np.sum((obs - mod) ** 2) / len(obs))
@@ -25,9 +24,9 @@ weights = np.ones(52)
 weights[0] = 0.5
 weights[-1] = 0.5
 
-df_temp = pd.read_csv("../data/priors_output/billy_10k/priors_temperature.csv")
+df_temp = pd.read_csv("../data/priors_output/priors_temperature.csv")
 
-temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values[:,1:]
+temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values
 temp_hist_offset = temp_hist - np.average(temp_hist[:52, :], weights=weights, axis=0)
 
 
@@ -65,7 +64,7 @@ plt.tight_layout()
 #%%
 
 
-df_flux = pd.read_csv("../data/priors_output/billy_10k/priors_ocean_CO2_flux.csv")
+df_flux = pd.read_csv("../data/priors_output/priors_ocean_CO2_flux.csv")
 
 flux_hist = df_flux.loc[(df_flux['Year']>=1781) & (df_flux['Year']<=2022)].drop(columns='Year').values[:,1:]
 flux_hist_for_rmse = df_flux.loc[(df_flux['Year']>=1960) & (df_flux['Year']<=2022)].drop(columns='Year').values[:,1:] 
@@ -160,11 +159,11 @@ accept_both = np.logical_and(accept_temp, accept_flux)
 #%%
 
 priors_temp_2005_14 = np.mean(df_temp.loc[(df_temp['Year']>=2005) & (
-                df_temp['Year']<=2014)].drop(columns='Year').values[:,1:] - np.average(temp_hist[:52, :], 
+                df_temp['Year']<=2014)].drop(columns='Year').values - np.average(temp_hist[:52, :], 
                      weights=weights, axis=0), axis=0)
 
 priors_flux_2005_14 = np.mean(df_flux.loc[(df_flux['Year']>=2005) & (
-                df_flux['Year']<=2014)].drop(columns='Year').values[:,1:], axis=0)
+                df_flux['Year']<=2014)].drop(columns='Year').values, axis=0)
 
 priors_flux_2005_14_obs = np.mean(df_ocean["ocean sink"].loc[(df_ocean['Year']>=2005) & (
                 df_ocean['Year']<=2014)].drop(columns='Year').values, axis=0)
