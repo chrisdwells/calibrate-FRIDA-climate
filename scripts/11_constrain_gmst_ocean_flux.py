@@ -66,8 +66,8 @@ plt.tight_layout()
 
 df_flux = pd.read_csv("../data/priors_output/priors_ocean_CO2_flux.csv")
 
-flux_hist = df_flux.loc[(df_flux['Year']>=1781) & (df_flux['Year']<=2022)].drop(columns='Year').values[:,1:]
-flux_hist_for_rmse = df_flux.loc[(df_flux['Year']>=1960) & (df_flux['Year']<=2022)].drop(columns='Year').values[:,1:] 
+flux_hist = df_flux.loc[(df_flux['Year']>=1781) & (df_flux['Year']<=2022)].drop(columns='Year').values
+flux_hist_for_rmse = df_flux.loc[(df_flux['Year']>=1960) & (df_flux['Year']<=2022)].drop(columns='Year').values
 
 
 df_ocean = pd.read_csv("../data/external/GCB_historical_budget.csv")
