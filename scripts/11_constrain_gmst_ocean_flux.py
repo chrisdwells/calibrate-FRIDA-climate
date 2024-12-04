@@ -26,31 +26,35 @@ weights[-1] = 0.5
 
 df_temp = pd.read_csv("../data/priors_output/priors_temperature.csv")
 
-temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values
+temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2022)].drop(columns='Year').values
 temp_hist_offset = temp_hist - np.average(temp_hist[:52, :], weights=weights, axis=0)
 
 
-df_temp_obs = pd.read_csv("../data/external/forcing/AR6_GMST.csv")
-gmst = df_temp_obs["gmst"].values
+df_temp_obs = pd.read_csv("../data/external/forcing/annual_averages.csv")
+gmst = df_temp_obs["gmst"].loc[(df_temp_obs['time'] > 1850) 
+                               & (df_temp_obs['time'] < 2023)].values
+
+time = df_temp_obs["time"].loc[(df_temp_obs['time'] > 1850) 
+                               & (df_temp_obs['time'] < 2023)].values
 
 #%%
 
 fig, ax = plt.subplots(figsize=(5, 5))
 
-ax.fill_between(df_temp_obs["year"], np.min(temp_hist_offset, axis=1), 
+ax.fill_between(time, np.min(temp_hist_offset, axis=1), 
                  np.max(temp_hist_offset, axis=1), color="#000000", alpha=0.2)
 
-ax.fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset, 95, axis=1), 
+ax.fill_between(time, np.percentile(temp_hist_offset, 95, axis=1), 
               np.percentile(temp_hist_offset, 5, axis=1), color="#000000", alpha=0.2)
 
-ax.fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset, 84, axis=1), 
+ax.fill_between(time, np.percentile(temp_hist_offset, 84, axis=1), 
               np.percentile(temp_hist_offset, 16, axis=1), color="#000000", alpha=0.2)
 
-ax.plot(df_temp_obs["year"], np.median(temp_hist_offset, axis=1), 
+ax.plot(time, np.median(temp_hist_offset, axis=1), 
                   color="#000000", alpha=0.2)
 
 
-ax.plot(df_temp_obs["year"], gmst, label='AR6 obs')
+ax.plot(time, gmst, label='AR6 obs')
 
 ax.set_xlim(1850, 2025)
 ax.set_ylim(-1, 5)
@@ -112,15 +116,15 @@ rmse_temp = np.zeros((samples))
 
 for i in range(samples):
     rmse_temp[i] = rmse(
-        gmst[:170],
-        temp_hist_offset[:170, i],
+        gmst,
+        temp_hist_offset[:, i],
     )
     
 accept_temp = rmse_temp < 0.16
 
 n_pass_temp = np.sum(accept_temp)
 
-print("Passing RMSE constraint:", n_pass_temp)
+print("Passing Temperature constraint:", n_pass_temp)
 valid_temp = np.arange(samples, dtype=int)[accept_temp]
 
 
@@ -192,14 +196,14 @@ plt.ylabel('Flux 2005-14')
 
 fig, axs = plt.subplots(4, 2, figsize=(12, 12))
 
-axs[0,0].fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset, 84, axis=1), 
+axs[0,0].fill_between(time, np.percentile(temp_hist_offset, 84, axis=1), 
               np.percentile(temp_hist_offset, 16, axis=1), color="#000000", alpha=0.2,
               label = '16-84 %ile')
 
-axs[0,0].plot(df_temp_obs["year"], np.median(temp_hist_offset, axis=1), 
+axs[0,0].plot(time, np.median(temp_hist_offset, axis=1), 
               color="#000000", label='Median')
 
-axs[0,0].plot(df_temp_obs["year"], gmst, label='AR6 obs')
+axs[0,0].plot(time, gmst, label='AR6 obs')
 
 axs[0,0].legend()
 axs[0,0].set_ylabel('deg C')
@@ -225,14 +229,14 @@ axs[0,1].set_title(f'All priors: {samples}')
 
 
 
-axs[1,0].fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset[:, accept_temp], 84, axis=1), 
+axs[1,0].fill_between(time, np.percentile(temp_hist_offset[:, accept_temp], 84, axis=1), 
               np.percentile(temp_hist_offset[:, accept_temp], 16, axis=1), color="#000000", alpha=0.2,
               label = '16-84 %ile')
 
-axs[1,0].plot(df_temp_obs["year"], np.median(temp_hist_offset[:, accept_temp], axis=1), 
+axs[1,0].plot(time, np.median(temp_hist_offset[:, accept_temp], axis=1), 
               color="#000000", label='Median')
 
-axs[1,0].plot(df_temp_obs["year"], gmst, label='AR6 obs')
+axs[1,0].plot(time, gmst, label='AR6 obs')
 
 axs[1,0].legend()
 axs[1,0].set_ylabel('deg C')
@@ -257,14 +261,14 @@ axs[1,1].set_title(f'Passing temp: {n_pass_temp}')
 
 
 
-axs[2,0].fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset[:, accept_flux], 84, axis=1), 
+axs[2,0].fill_between(time, np.percentile(temp_hist_offset[:, accept_flux], 84, axis=1), 
               np.percentile(temp_hist_offset[:, accept_flux], 16, axis=1), color="#000000", alpha=0.2,
               label = '16-84 %ile')
 
-axs[2,0].plot(df_temp_obs["year"], np.median(temp_hist_offset[:, accept_flux], axis=1), 
+axs[2,0].plot(time, np.median(temp_hist_offset[:, accept_flux], axis=1), 
               color="#000000", label='Median')
 
-axs[2,0].plot(df_temp_obs["year"], gmst, label='AR6 obs')
+axs[2,0].plot(time, gmst, label='AR6 obs')
 
 axs[2,0].legend()
 axs[2,0].set_ylabel('deg C')
@@ -290,14 +294,14 @@ axs[2,1].set_title(f'Passing flux: {n_pass_flux}')
 
 
 
-axs[3,0].fill_between(df_temp_obs["year"], np.percentile(temp_hist_offset[:, accept_both], 84, axis=1), 
+axs[3,0].fill_between(time, np.percentile(temp_hist_offset[:, accept_both], 84, axis=1), 
               np.percentile(temp_hist_offset[:, accept_both], 16, axis=1), color="#000000", alpha=0.2,
               label = '16-84 %ile')
 
-axs[3,0].plot(df_temp_obs["year"], np.median(temp_hist_offset[:, accept_both], axis=1), 
+axs[3,0].plot(time, np.median(temp_hist_offset[:, accept_both], axis=1), 
               color="#000000", label='Median')
 
-axs[3,0].plot(df_temp_obs["year"], gmst, label='AR6 obs')
+axs[3,0].plot(time, gmst, label='AR6 obs')
 
 axs[3,0].legend()
 axs[3,0].set_ylabel('deg C')

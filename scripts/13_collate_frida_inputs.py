@@ -37,32 +37,6 @@ df_1980_inits = pd.read_csv("../data/priors_output/priors_1980_initials.csv")
 
 #%%
 
-# Forgot to include CO2 stock in outputs from priors. Have fudged by running the 
-# posteriors back through and pulling it out for just those members, but 
-# now is set up so it should work if ran again, so this bit could be removed.
-
-if '="Run 1: CO2 Forcing.Atmospheric CO2 mass anomaly since 1750[1]"' in df_1980_inits.keys():
-    print('now time to remove this part')
-
-# TO DO remove this fudge
-df_1980_inits_co2 = pd.read_csv("../data/priors_output/priors_1980_initials_100_members.csv")
-
-
-df_1980_inits_co2_out = pd.DataFrame(columns=['CO2 Forcing.Initial Atmospheric CO2 mass anomaly since 1750'])
-
-
-for n_i in np.arange(output_ensemble_size):
-    row = []
-    
-    row.append(df_1980_inits_co2[
-        f'="Run {n_i+1}: CO2 Forcing.Atmospheric CO2 mass anomaly since 1750[1]"'].values[0])
-
-    df_1980_inits_co2_out.loc[n_i] = row
-   
-
-
-#%%
-
 df_temperature = pd.read_csv("../data/priors_output/priors_temperature.csv")
 
 
@@ -78,6 +52,7 @@ variable_stock_list = ['Ocean.Cold surface ocean pH[1]',
                     'Energy Balance Model.Deep Ocean Temperature[1]', 
                     
                     'CH4 Forcing.CH4 in atmosphere[1]',
+                    'CO2 Forcing.Atmospheric CO2 mass anomaly since 1750[1]',
                     ]
 
 variable_stock_list_frida = []
@@ -106,10 +81,6 @@ for n_i in np.arange(samples):
 
 run_inits = df_inits_out.values[runids]
 df_run_inits = pd.DataFrame(data=run_inits, columns=df_inits_out.keys())
-
-
-df_run_inits = pd.concat([df_run_inits, df_1980_inits_co2_out], axis=1)
-
 
 
 df_combined = pd.concat([df_run_params, df_run_inits], axis=1)
@@ -141,9 +112,16 @@ for stock in fixed_stock_list:
 
 df_out_fixed.loc[0] = row
 
-# need to internalise this when emissions change
-df_out_fixed['CO2 Forcing.Initial Cumulative CO2 emissions'] = 1128941.22245
-df_out_fixed['N2O Forcing.Initial Cumulative N2O emissions'] = 369316.190142
+#%%
+
+df_ems = pd.read_csv("../data/external/inputs_for_frida/climate_calibration_data.csv")
+df_ems = df_ems.loc[(df_ems['Year'] >= 1750) & (df_ems['Year'] < 1980)]
+
+df_out_fixed['N2O Forcing.Initial Cumulative N2O emissions'] = np.sum(df_ems[
+    'Emissions.Total N2O Emissions'].values)
+df_out_fixed['CO2 Forcing.Initial Cumulative CO2 emissions'] = np.sum(df_ems[
+    'Emissions.CO2 Emissions from Fossil use'].values + df_ems[
+    'Emissions.CO2 Emissions from Food and Land Use'].values)
 
 df_out_fixed.to_csv('../data/constraining/frida_climate_inputs_constant_stocks.csv', index=False)
 
@@ -236,8 +214,8 @@ perc_runs_data = df_combined.values[np.asarray(idxs_percs) - 1,:]
 
 df_perc_runs_data = pd.DataFrame(data=perc_runs_data, columns=df_combined.keys())
 
-# df_perc_runs_data.to_csv(
-#     f"../data/constraining/frida_climate_inputs_{output_ensemble_size}_from_{samples}_{len(percs)}_percs.csv",
-#     index=False,
-# )
+df_perc_runs_data.to_csv(
+    f"../data/constraining/frida_climate_inputs_{output_ensemble_size}_from_{samples}_{len(percs)}_percs.csv",
+    index=False,
+)
 

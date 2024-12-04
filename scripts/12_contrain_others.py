@@ -91,18 +91,29 @@ def opt(x, q05_desired, q50_desired, q95_desired):
     return (q05 - q05_desired, q50 - q50_desired, q95 - q95_desired)
 
 
+ecs_params = scipy.optimize.root(opt, [1, 1, 1], args=(2, 3, 5)).x
+gsat_params = scipy.optimize.root(opt, [1, 1, 1], args=(0.87, 1.03, 1.13)).x
+
 samples_dict = {}
 samples_dict["ECS"] = scipy.stats.skewnorm.rvs(
-    8.82185594, loc=1.95059779, scale=1.55584604, size=10**5, random_state=91603
+    ecs_params[0],
+    loc=ecs_params[1],
+    scale=ecs_params[2],
+    size=10**5,
+    random_state=91603,
 )
 samples_dict["TCR"] = scipy.stats.norm.rvs(
     loc=1.8, scale=0.6 / NINETY_TO_ONESIGMA, size=10**5, random_state=18196
 )
-samples_dict["OHC"] = scipy.stats.norm.rvs(
-    loc=396 / 0.91, scale=67 / 0.91, size=10**5, random_state=43178
+samples_dict["temperature 2003-2022"] = scipy.stats.skewnorm.rvs(
+    gsat_params[0],
+    loc=gsat_params[1],
+    scale=gsat_params[2],
+    size=10**5,
+    random_state=19387,
 )
-samples_dict["temperature 1995-2014"] = scipy.stats.skewnorm.rvs(
-    -1.65506091, loc=0.92708099, scale=0.12096636, size=10**5, random_state=19387
+samples_dict["OHC"] = scipy.stats.norm.rvs(
+    loc=465.3, scale=108.5 / NINETY_TO_ONESIGMA, size=10**5, random_state=43178
 )
 # samples_dict["ERFari"] = scipy.stats.norm.rvs(
 #     loc=-0.3, scale=0.3 / NINETY_TO_ONESIGMA, size=10**5, random_state=70173
@@ -117,7 +128,7 @@ samples_dict["ERFaer"] = scipy.stats.norm.rvs(
     random_state=3916153,
 )
 samples_dict["CO2 concentration"] = scipy.stats.norm.rvs(
-    loc=397.5469792683919, scale=0.36, size=10**5, random_state=81693
+    loc=417.0, scale=0.5, size=10**5, random_state=81693
 )
 
 
@@ -126,7 +137,7 @@ for constraint in [
     "ECS",
     "TCR",
     "OHC",
-    "temperature 1995-2014",
+    "temperature 2003-2022",
     # "ERFari",
     # "ERFaci",
     "ERFaer",
@@ -143,7 +154,7 @@ accepted = pd.DataFrame(
         "ECS": ecs_in[valid_temp_flux],
         "TCR": tcr_in[valid_temp_flux],
         "OHC": ohc_in[valid_temp_flux],
-        "temperature 1995-2014": temp_in[valid_temp_flux],
+        "temperature 2003-2022": temp_in[valid_temp_flux],
         # "ERFari": fari_in[valid_temp_flux],
         # "ERFaci": faci_in[valid_temp_flux],
         "ERFaer": faer_in[valid_temp_flux],
@@ -281,10 +292,10 @@ prior_tcr = scipy.stats.gaussian_kde(tcr_in)
 post1_tcr = scipy.stats.gaussian_kde(tcr_in[valid_temp_flux])
 post2_tcr = scipy.stats.gaussian_kde(draws[0]["TCR"])
 
-target_temp = scipy.stats.gaussian_kde(samples_dict["temperature 1995-2014"])
+target_temp = scipy.stats.gaussian_kde(samples_dict["temperature 2003-2022"])
 prior_temp = scipy.stats.gaussian_kde(temp_in)
 post1_temp = scipy.stats.gaussian_kde(temp_in[valid_temp_flux])
-post2_temp = scipy.stats.gaussian_kde(draws[0]["temperature 1995-2014"])
+post2_temp = scipy.stats.gaussian_kde(draws[0]["temperature 2003-2022"])
 
 target_ohc = scipy.stats.gaussian_kde(samples_dict["OHC"])
 prior_ohc = scipy.stats.gaussian_kde(ohc_in)
@@ -410,7 +421,7 @@ ax[0, 2].set_xlim(start, stop)
 ax[0, 2].set_ylim(0, 5)
 ax[0, 2].set_title("Temperature anomaly")
 ax[0, 2].set_yticklabels([])
-ax[0, 2].set_xlabel("°C, 1995-2014 minus 1850-1900")
+ax[0, 2].set_xlabel("°C, 2003-2022 minus 1850-1900")
 
 # start = -1.0
 # stop = 0.3
@@ -509,8 +520,8 @@ ax[1, 2].legend(frameon=False, loc="upper left")
 ax[1, 2].set_yticklabels([])
 ax[1, 2].set_xlabel("W m$^{-2}$, 2005-2014 minus 1750")
 
-start = 394
-stop = 402
+start = 413
+stop = 421
 ax[2, 0].plot(
     np.linspace(start, stop, 1000),
     target_co2(np.linspace(start, stop, 1000)),
@@ -539,7 +550,7 @@ ax[2, 0].set_xlim(start, stop)
 ax[2, 0].set_ylim(0, 1.2)
 ax[2, 0].set_title("CO$_2$ concentration")
 ax[2, 0].set_yticklabels([])
-ax[2, 0].set_xlabel("ppm, 2014")
+ax[2, 0].set_xlabel("ppm, 2022")
 
 start = 0
 stop = 800
@@ -571,7 +582,7 @@ ax[2, 1].set_xlim(start, stop)
 ax[2, 1].set_ylim(0, 0.006)
 ax[2, 1].set_title("Ocean heat content change")
 ax[2, 1].set_yticklabels([])
-ax[2, 1].set_xlabel("ZJ, 2018 minus 1971")
+ax[2, 1].set_xlabel("ZJ, 2020 minus 1971")
 
 
 fig.tight_layout()
@@ -586,11 +597,11 @@ plt.savefig(
 print("Constrained, reweighted parameters:")
 print("ECS:", np.percentile(draws[0]["ECS"], (5, 50, 95)))
 print(
-    "CO2 concentration 2014:", np.percentile(draws[0]["CO2 concentration"], (5, 50, 95))
+    "CO2 concentration 2022:", np.percentile(draws[0]["CO2 concentration"], (5, 50, 95))
 )
 print(
-    "Temperature 1995-2014 rel. 1850-1900:",
-    np.percentile(draws[0]["temperature 1995-2014"], (5, 50, 95)),
+    "temperature 2003-2022 rel. 1850-1900:",
+    np.percentile(draws[0]["temperature 2003-2022"], (5, 50, 95)),
 )
 # print(
 #     "Aerosol ERFari 2005-2014 rel. 1750:",
@@ -602,17 +613,18 @@ print(
 # )
 print(
     "Aerosol ERF 2005-2014 rel. 1750:",
-    np.percentile(draws[0]["ERFaci"] + draws[0]["ERFari"], (5, 50, 95)),
+    np.percentile(draws[0]["ERFaer"], (5, 50, 95)),
 )
 print(
-    "OHC change 2018 rel. 1971*:", np.percentile(draws[0]["OHC"] * 0.91, (16, 50, 84))
+    "OHC change 2020 rel. 1971*:", np.percentile(draws[0]["OHC"] * 0.91, (16, 50, 84))
 )
 
 print("*likely range")
 
 #%%
-df_temp_obs = pd.read_csv("../data/external/forcing/AR6_GMST.csv")
-gmst = df_temp_obs["gmst"].values
+df_temp_obs = pd.read_csv("../data/external/forcing/annual_averages.csv")
+gmst = df_temp_obs["gmst"].loc[(df_temp_obs['time'] > 1850) 
+                               & (df_temp_obs['time'] < 2023)].values
 
 fig, ax = plt.subplots(1, 2, figsize=(10, 6))
 
@@ -643,7 +655,7 @@ ax[0].plot(
     color="#000000",
 )
 
-ax[0].plot(np.arange(1850.5, 2021), gmst, color="b", label="Observations")
+ax[0].plot(np.arange(1850.5, 2023), gmst, color="b", label="Observations")
 
 ax[0].legend(frameon=False, loc="upper left")
 
