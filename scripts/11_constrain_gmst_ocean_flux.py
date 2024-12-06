@@ -70,6 +70,9 @@ plt.tight_layout()
 
 df_flux = pd.read_csv("../data/priors_output/priors_ocean_CO2_flux.csv")
 
+if '="Calibration Data: Ocean.Air sea co2 flux[1]"' in df_flux.keys(): # this occured once - not sure why
+    df_flux = df_flux.drop(['="Calibration Data: Ocean.Air sea co2 flux[1]"'], axis=1)
+
 flux_hist = df_flux.loc[(df_flux['Year']>=1781) & (df_flux['Year']<=2022)].drop(columns='Year').values
 flux_hist_for_rmse = df_flux.loc[(df_flux['Year']>=1960) & (df_flux['Year']<=2022)].drop(columns='Year').values
 
