@@ -4,3 +4,4 @@ data/priors_input/*csv
 data/priors_output/*csv
 data/spinup_input/*csv
 scripts/*plot.py
+scratch/
