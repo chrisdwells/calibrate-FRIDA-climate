@@ -1,0 +1,12 @@
+name: calibrate-FRIDA-climate
+channels:
+  - conda-forge
+dependencies:
+  - fair=2.1.4
+  - python=3.11
+  - matplotlib
+  - python-dotenv
+  - numpy
+  - pandas
+  - scipy
+  - tqdm

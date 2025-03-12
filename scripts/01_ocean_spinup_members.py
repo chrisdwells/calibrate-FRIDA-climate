@@ -60,7 +60,7 @@ df_co2 = pd.DataFrame({"Ocean.Atmospheric CO2 Concentration 1750[1]": co2_1750_c
 
 df = pd.concat([df, df_co2], axis=1)
 
-
+os.makedirs("../data/spinup_input/", exist_ok=True)
 df.to_csv(
     f"../data/spinup_input/ocean_spinup_params_{ocean_samples}.csv",
     index=False,

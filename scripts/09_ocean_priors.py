@@ -53,6 +53,7 @@ param_dict["Ocean.Cold surface ocean salinity sensitivity to global T anomaly[1]
            
 df = pd.DataFrame(param_dict, columns=param_dict.keys())
 
+os.makedirs("../data/priors_input", exist_ok=True)
 df.to_csv(
     f"../data/priors_input/ocean_priors_params_{samples}.csv",
     index=False,

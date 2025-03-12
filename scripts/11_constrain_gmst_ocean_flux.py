@@ -329,6 +329,8 @@ axs[3,1].set_title(f'Passing both: {n_pass_both}')
 
 plt.tight_layout()
 
+os.makedirs("../plots", exist_ok=True)
+
 plt.savefig(
     "../plots/rmse_constrained.png"
 )
