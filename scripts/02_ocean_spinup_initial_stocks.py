@@ -4,8 +4,7 @@ import os
 
 from dotenv import load_dotenv
 
-# adapted from stocks output, for the ocean initialisation, to do the
-# ocean & temperature calibration. Need to run Ocean_spinup_start before this.
+# Need to run Ocean_spinup_start before this.
 
 # Ocean_spinup_start runs for 100 years at dt=1/8, to avoid initial shocks.
 # This script converts the output stocks from those into the format that 

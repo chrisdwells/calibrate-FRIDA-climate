@@ -1,9 +1,10 @@
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
+
+# Process outputs into format to go into FRIDA
 
 load_dotenv()
 

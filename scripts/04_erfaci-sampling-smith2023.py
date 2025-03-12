@@ -1,35 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Sample aerosol indirect."""
-
-# # Using the fair-2.1 pure log formula
-#
-# **Note**
-# Estimating aerosol cloud interactions from 11 CMIP6 models was performed in Smith
-#  et al. 2021: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2020JD033622.
-#
-# The underlying APRP code was slightly wrong, and has been updated thanks to Mark
-# Zelinka (released as climateforcing v0.3.0). Two more models are now available.
-# Actually three are, but EC-Earth3 is unusable due to unphysical values of rsuscs and
-# rsdscs leading to biased ERFaci estimates.
-#
-# \begin{equation}
-# F = \beta \log \left( 1 + \sum_{i} n_i A_i \right)
-# \end{equation}
-#
-# where
-# - $A_i$ is the atmospheric input (concentrations or emissions of a specie),
-# - $\beta_i$ is a scale factor,
-# - $n_i$ dictates how much emissions of a specie contributes to CDNC.
-#
-# **Note also** the uniform prior from -2 to 0. A lot of the sublteties here might also
-# want to go into the paper.
-
-
 import glob
 import os
-
 import numpy as np
 import pandas as pd
 import pooch
@@ -37,6 +7,11 @@ import scipy.stats
 from dotenv import load_dotenv
 from scipy.optimize import curve_fit
 from tqdm import tqdm
+
+# Adapted from FaIR calibrate
+
+# Using the fair-2.1 pure log formula
+
 
 load_dotenv()
 

@@ -1,14 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Check and run carbon cycle calibrations."""
-#
-# Carbon cycle tunings for 11 C4MIP models are from FaIR 2.0 paper (Leach et al. 2021),
-# calibrated on CMIP6 1pct runs. Let's see if they give reasonable concentrations in
-# emissions-driven mode.
-
 import os
-
 import numpy as np
 import pandas as pd
 import scipy.stats
@@ -16,6 +6,12 @@ from dotenv import load_dotenv
 from fair import FAIR
 from fair.interface import fill, initialise
 from fair.structure.units import compound_convert
+
+# Adapted from FaIR calibrate
+
+# Carbon cycle tunings for 11 C4MIP models are from FaIR 2.0 paper (Leach et al. 2021),
+# calibrated on CMIP6 1pct runs. Let's see if they give reasonable concentrations in
+# emissions-driven mode.
 
 load_dotenv()
 

@@ -1,8 +1,11 @@
-#!/usr/bin/env python
-# coding: utf-8
+import os
+import numpy as np
+import pandas as pd
+import scipy.stats
+from dotenv import load_dotenv
 
-"""ERF scaling factors"""
-#
+# Adapted from FaIR calibrate
+
 # Based on AR6 Chapter 7 ERF uncertainty
 #
 # We do not modify forcing scale factors for ozone and aerosols, because we adjust the
@@ -12,13 +15,6 @@
 # Update for reduced FaIR v2: we remove the Ozone scaling factor as we are
 # modelling the Ozone forcing components individually now. We replace land use
 # with separate albedo and irrigation ones
-
-import os
-
-import numpy as np
-import pandas as pd
-import scipy.stats
-from dotenv import load_dotenv
 
 load_dotenv()
 

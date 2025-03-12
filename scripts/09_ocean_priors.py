@@ -1,19 +1,15 @@
-#!/usr/bin/env python
-# coding: utf-8
+import os
+import pandas as pd
+import scipy.stats
+from dotenv import load_dotenv
 
-# cribbed from fair calibrate
+# Adapted from FaIR calibrate
+
 # this is for the ocean params which don't affect the spin-up; they only get
 # varied in the prior ensemble. because of this, we use the full sample number 
 
 # the salinity and alkalinity should change together, so we generate the 
 # salinity parameters by scaling the alkalinity ones to match their range
-
-import os
-
-# import numpy as np
-import pandas as pd
-import scipy.stats
-from dotenv import load_dotenv
 
 load_dotenv()
 

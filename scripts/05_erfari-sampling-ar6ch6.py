@@ -1,23 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Aerosol-radiation calibration."""
-#
-# Reduced FaIR: just SO2
-#
-# Use the AR6 per-species ERFari calibrations, from Chapter 6 Fig. 6.12. This includes
-# contibutions from CH4, N2O and HCs.
-#
-# The uncertainty is uniform for each specie, a factor of two. This needs to be
-# documented in paper.
-
 import os
-
 import numpy as np
 import pandas as pd
 import pooch
 import scipy.stats
 from dotenv import load_dotenv
+
+# Adapted from FaIR calibrate
+
+# Reduced FaIR: just SO2
+
+# Use the AR6 per-species ERFari calibrations, from Chapter 6 Fig. 6.12. This includes
+# contibutions from CH4, N2O and HCs.
 
 load_dotenv()
 

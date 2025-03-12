@@ -1,18 +1,14 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""First constraint: RMSE < 0.16 K"""
-
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
 
-load_dotenv()
+# Adapted from FaIR calibrate
 
-print("Doing RMSE constraint...")
+# Exclude priors which don't closely match GMST and air-sea CO2 flux
+
+load_dotenv()
 
 samples = int(os.getenv("PRIOR_SAMPLES"))
 

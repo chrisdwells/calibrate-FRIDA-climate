@@ -1,25 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Climate response calibrations"""
-
-
-# For FRIDA, get ECS and TCR from the FaIR EBM
-# note this doesn't give the same as 3.93*co2_scale_data/kappa1_data...
-
-
-# The purpose here is to provide correlated calibrations to the climate response in
-# CMIP6 models.
-#
-# We will apply a very naive model weighting to the 4xCO2 results. We won't downweight
-# for similar models*, but we will only select one ensemble member from models that
-# provide multiple runs (the ensemble member that I deem the most reliable).
-#
-# *maybe the same model at different resolution should be downweighted.
-
 import os
-
-# import matplotlib.pyplot as pl
 import numpy as np
 import pandas as pd
 import scipy.linalg
@@ -35,6 +14,14 @@ from fair.interface import fill, initialise
 from fair.energy_balance_model import (
     multi_ebm,
 )
+
+# Adapted from FaIR calibrate
+
+# For FRIDA, get ECS and TCR from the FaIR EBM
+
+# The purpose here is to provide correlated calibrations to the climate response in
+# CMIP6 models.
+
 load_dotenv()
 
 samples = int(os.getenv("PRIOR_SAMPLES"))
@@ -261,12 +248,12 @@ ebms = multi_ebm(
     ocean_heat_capacity=f.climate_configs["ocean_heat_capacity"],
     ocean_heat_transfer=f.climate_configs["ocean_heat_transfer"],
     deep_ocean_efficacy=f.climate_configs["deep_ocean_efficacy"],
-    # stochastic_run=f.climate_configs["stochastic_run"],
-    # sigma_eta=f.climate_configs["sigma_eta"],
-    # sigma_xi=f.climate_configs["sigma_xi"],
-    # gamma_autocorrelation=f.climate_configs["gamma_autocorrelation"],
-    # seed=f.climate_configs["seed"],
-    # use_seed=f.climate_configs["use_seed"],
+    stochastic_run=f.climate_configs["stochastic_run"],
+    sigma_eta=f.climate_configs["sigma_eta"],
+    sigma_xi=f.climate_configs["sigma_xi"],
+    gamma_autocorrelation=f.climate_configs["gamma_autocorrelation"],
+    seed=f.climate_configs["seed"],
+    use_seed=f.climate_configs["use_seed"],
     forcing_4co2=f.climate_configs["forcing_4co2"],
     timestep=f.timestep,
     timebounds=f.timebounds,

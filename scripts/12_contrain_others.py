@@ -1,21 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Apply posterior weighting"""
-
-# mention in paper: skew-normal distribution
-# this is where Zeb earns his corn
-
-# for FRIDA, calculate ECS from the parameters.
-
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy.optimize
 import scipy.stats
 from dotenv import load_dotenv
+
+# Adapted from FaIR calibrate
+# for FRIDA, calculate ECS from the parameters.
 
 load_dotenv()
 

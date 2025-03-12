@@ -1,25 +1,19 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-"""Ozone calibration"""
-
-# out for FRIDAv1; back in for v2, with EESC brought in externally. 
-
-# concentrations are midyear rather than endyear so are six months out, but it won't
-# be a biggie.
-
 import copy
 import os
-
-# import matplotlib.pyplot as pl
 import numpy as np
 import pandas as pd
 import pooch
 import scipy.stats
 from dotenv import load_dotenv
-# from fair import __version__
 from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
+
+# Adapted from FaIR calibrate
+
+# out for FRIDAv1; back in for v2, with EESC brought in externally. 
+
+# concentrations are midyear rather than endyear so are six months out, but it won't
+# be a biggie.
 
 load_dotenv()
 

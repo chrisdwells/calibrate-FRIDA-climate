@@ -1,18 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
+import os
+import pandas as pd
+import scipy.stats
+from dotenv import load_dotenv
+import numpy as np
 
 # cribbed from fair calibrate. feed these into Ocean_spinup_start. includes
 # atmos co2 1750 as this affects the ocean spinup
 
 # Run this, and then Ocean_spinup_start 
-
-import os
-
-# import numpy as np
-import pandas as pd
-import scipy.stats
-from dotenv import load_dotenv
-import numpy as np
 
 load_dotenv()
 
@@ -65,3 +60,28 @@ df.to_csv(
     f"../data/spinup_input/ocean_spinup_params_{ocean_samples}.csv",
     index=False,
 )
+
+
+# make blank csvs if needed for output from spinup and priors
+
+os.makedirs("../data/spinup_output/", exist_ok=True)
+os.makedirs("../data/priors_output/", exist_ok=True)
+
+needed_csvs = [
+    '../data/spinup_output/Ocean_spinup_output_end.csv',
+    '../data/spinup_output/Ocean_spinup_output_end_tests.csv',
+    '../data/spinup_output/Ocean_spinup_output_start.csv',
+
+    '../data/priors_output/priors_1980_initials.csv',
+    '../data/priors_output/priors_aerosols.csv',
+    '../data/priors_output/priors_CO2.csv',
+    '../data/priors_output/priors_ocean_CO2_flux.csv',
+    '../data/priors_output/priors_ocean_heat_content.csv',
+    '../data/priors_output/priors_temperature.csv',
+    ]
+
+for csv in needed_csvs:
+    if os.path.isfile(csv) == False:
+        df_blank = pd.DataFrame(list())
+        df_blank.to_csv(csv)
+
