@@ -51,6 +51,7 @@ variable_stock_list = ['Ocean.Cold surface ocean pH[1]',
                     'Energy Balance Model.Land & Ocean Surface Temperature[1]', 
                     'Energy Balance Model.Thermocline Ocean Temperature[1]', 
                     'Energy Balance Model.Deep Ocean Temperature[1]', 
+                    'Energy Balance Model.ocean heat content change[1]',
                     
                     'CH4 Forcing.CH4 in atmosphere[1]',
                     'CO2 Forcing.Atmospheric CO2 mass anomaly since 1750[1]',
