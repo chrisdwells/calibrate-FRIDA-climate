@@ -5,6 +5,7 @@ import pandas as pd
 import scipy.optimize
 import scipy.stats
 from dotenv import load_dotenv
+import pickle
 
 # Adapted from FaIR calibrate
 # for FRIDA, calculate ECS from the parameters.
@@ -25,53 +26,53 @@ input_ensemble_size = len(valid_temp_flux)
 assert input_ensemble_size > output_ensemble_size
 
 
-weights_20yr = np.ones(21)
+# need to manipulate temperature so do differently to others
+weights_20yr = np.ones(20)
 weights_20yr[0] = 0.5
 weights_20yr[-1] = 0.5
-weights_51yr = np.ones(52)
+weights_51yr = np.ones(51)
 weights_51yr[0] = 0.5
 weights_51yr[-1] = 0.5
 
 df_temp = pd.read_csv("../data/priors_output/priors_temperature.csv")
+temp_pi = np.average(df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=1900)].drop(columns='Year').values, weights=weights_51yr, axis=0)
+temp_pd = np.average(df_temp.loc[(df_temp['Year']>=2003) & (df_temp['Year']<=2022)].drop(columns='Year').values, weights=weights_20yr, axis=0)
+temp_in = temp_pd - temp_pi
 
-temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values[:,1:]
-temp_in = np.average(temp_hist[145:166, :], weights=weights_20yr, axis=0
-             ) - np.average(temp_hist[:52, :], weights=weights_51yr, axis=0)
-
-temp_hist_offset = temp_hist - np.average(temp_hist[:52, :], weights=weights_51yr, axis=0)
-
-
+# for others, pull in data by run
 df_ohc = pd.read_csv("../data/priors_output/priors_ocean_heat_content.csv")
-
-ohc_data = df_ohc.drop(columns='Year').values
-
+ohc_data = np.full((2, samples), np.nan)
+for i in np.arange(samples):
+    ohc_data[:,i] = df_ohc[f'="Run {i+1}: Energy Balance Model.ocean heat content change[1]"']
 ohc_in = (ohc_data[1,:] - ohc_data[0,:])*1000 # units
 
 
 df_aer = pd.read_csv("../data/priors_output/priors_aerosols.csv")
-
 faci_in = np.full(samples, np.nan)
 fari_in = np.full(samples, np.nan)
-
 for i in np.arange(samples):
-    
     faci_in[i] = np.mean(df_aer[
     f'="Run {i+1}: Aerosol Forcing.Effective Radiative Forcing from Aerosol-Cloud Interactions[1]"'])
-    
     fari_in[i] = np.mean(df_aer[
     f'="Run {i+1}: Aerosol Forcing.Effective Radiative Forcing from Aerosol-Radiation Interactions[1]"'])
-    
+faer_in = fari_in + faci_in
 
 df_co2 = pd.read_csv("../data/priors_output/priors_CO2.csv")
-co2_in = df_co2.drop(columns='Year').values[0,:]
-
-
+co2_in = np.full(samples, np.nan)
+for i in np.arange(samples):
+    co2_in[i] = df_co2[f'="Run {i+1}: CO2 Forcing.Atmospheric CO2 Concentration[1]"']
+    
 df_ecs_tcr = pd.read_csv(f"../data/external/samples_for_priors/ecs_tcs_{samples}.csv")
-
 ecs_in = df_ecs_tcr['ecs']
 tcr_in = df_ecs_tcr['tcr']
 
-faer_in = fari_in + faci_in
+# ensure shape is as we expect
+assert temp_in.shape == (samples,)
+assert ohc_in.shape == (samples,)
+assert faer_in.shape == (samples,)
+assert co2_in.shape == (samples,)
+assert ecs_in.shape == (samples,)
+assert tcr_in.shape == (samples,)
 
 #%%
 def opt(x, q05_desired, q50_desired, q95_desired):
@@ -314,9 +315,17 @@ prior_co2 = scipy.stats.gaussian_kde(co2_in)
 post1_co2 = scipy.stats.gaussian_kde(co2_in[valid_temp_flux])
 post2_co2 = scipy.stats.gaussian_kde(draws[0]["CO2 concentration"])
 
+
+dict_distributions = {}
+dict_distributions['ECS'] = {}
+dict_distributions['TCR'] = {}
+dict_distributions['Temp'] = {}
+dict_distributions['OHC'] = {}
+dict_distributions['Aerosol'] = {}
+dict_distributions['CO2'] = {}
+
+
 colors = {"prior": "#207F6E", "post1": "#684C94", "post2": "#EE696B", "target": "black"}
-
-
 
 fig, ax = plt.subplots(3, 3, figsize=(10, 10))
 start = 0
@@ -351,6 +360,16 @@ ax[0, 0].set_title("ECS")
 ax[0, 0].set_yticklabels([])
 ax[0, 0].set_xlabel("°C")
 
+
+dict_distributions['ECS']['Priors'] = prior_ecs(np.linspace(start, stop, 1000))
+dict_distributions['ECS']['Target'] = target_ecs(np.linspace(start, stop, 1000))
+dict_distributions['ECS']['Post1'] = post1_ecs(np.linspace(start, stop, 1000))
+dict_distributions['ECS']['Post2'] = post2_ecs(np.linspace(start, stop, 1000))
+dict_distributions['ECS']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['ECS']['xlim'] = [start, stop]
+
+
+
 start = 0
 stop = 4
 ax[0, 1].plot(
@@ -383,6 +402,14 @@ ax[0, 1].set_title("TCR")
 ax[0, 1].set_yticklabels([])
 ax[0, 1].set_xlabel("°C")
 
+dict_distributions['TCR']['Priors'] = prior_tcr(np.linspace(start, stop, 1000))
+dict_distributions['TCR']['Target'] = target_tcr(np.linspace(start, stop, 1000))
+dict_distributions['TCR']['Post1'] = post1_tcr(np.linspace(start, stop, 1000))
+dict_distributions['TCR']['Post2'] = post2_tcr(np.linspace(start, stop, 1000))
+dict_distributions['TCR']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['TCR']['xlim'] = [start, stop]
+
+
 start = 0.5
 stop = 1.3
 ax[0, 2].plot(
@@ -414,6 +441,14 @@ ax[0, 2].set_ylim(0, 5)
 ax[0, 2].set_title("Temperature anomaly")
 ax[0, 2].set_yticklabels([])
 ax[0, 2].set_xlabel("°C, 2003-2022 minus 1850-1900")
+
+dict_distributions['Temp']['Priors'] = prior_temp(np.linspace(start, stop, 1000))
+dict_distributions['Temp']['Target'] = target_temp(np.linspace(start, stop, 1000))
+dict_distributions['Temp']['Post1'] = post1_temp(np.linspace(start, stop, 1000))
+dict_distributions['Temp']['Post2'] = post2_temp(np.linspace(start, stop, 1000))
+dict_distributions['Temp']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['Temp']['xlim'] = [start, stop]
+
 
 # start = -1.0
 # stop = 0.3
@@ -512,6 +547,14 @@ ax[1, 2].legend(frameon=False, loc="upper left")
 ax[1, 2].set_yticklabels([])
 ax[1, 2].set_xlabel("W m$^{-2}$, 2005-2014 minus 1750")
 
+dict_distributions['Aerosol']['Priors'] = prior_aer(np.linspace(start, stop, 1000))
+dict_distributions['Aerosol']['Target'] = target_aer(np.linspace(start, stop, 1000))
+dict_distributions['Aerosol']['Post1'] = post1_aer(np.linspace(start, stop, 1000))
+dict_distributions['Aerosol']['Post2'] = post2_aer(np.linspace(start, stop, 1000))
+dict_distributions['Aerosol']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['Aerosol']['xlim'] = [start, stop]
+
+
 start = 413
 stop = 421
 ax[2, 0].plot(
@@ -544,6 +587,15 @@ ax[2, 0].set_title("CO$_2$ concentration")
 ax[2, 0].set_yticklabels([])
 ax[2, 0].set_xlabel("ppm, 2022")
 
+
+dict_distributions['CO2']['Priors'] = prior_co2(np.linspace(start, stop, 1000))
+dict_distributions['CO2']['Target'] = target_co2(np.linspace(start, stop, 1000))
+dict_distributions['CO2']['Post1'] = post1_co2(np.linspace(start, stop, 1000))
+dict_distributions['CO2']['Post2'] = post2_co2(np.linspace(start, stop, 1000))
+dict_distributions['CO2']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['CO2']['xlim'] = [start, stop]
+
+
 start = 0
 stop = 800
 ax[2, 1].plot(
@@ -575,6 +627,14 @@ ax[2, 1].set_ylim(0, 0.006)
 ax[2, 1].set_title("Ocean heat content change")
 ax[2, 1].set_yticklabels([])
 ax[2, 1].set_xlabel("ZJ, 2020 minus 1971")
+
+
+dict_distributions['OHC']['Priors'] = prior_ohc(np.linspace(start, stop, 1000))
+dict_distributions['OHC']['Target'] = target_ohc(np.linspace(start, stop, 1000))
+dict_distributions['OHC']['Post1'] = post1_ohc(np.linspace(start, stop, 1000))
+dict_distributions['OHC']['Post2'] = post2_ohc(np.linspace(start, stop, 1000))
+dict_distributions['OHC']['Xs'] = np.linspace(start, stop, 1000)
+dict_distributions['OHC']['xlim'] = [start, stop]
 
 
 fig.tight_layout()
@@ -617,6 +677,9 @@ print("*likely range")
 df_temp_obs = pd.read_csv("../data/external/forcing/annual_averages.csv")
 gmst = df_temp_obs["gmst"].loc[(df_temp_obs['time'] > 1850) 
                                & (df_temp_obs['time'] < 2023)].values
+
+temp_hist = df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=2020)].drop(columns='Year').values
+temp_hist_offset = temp_hist - temp_pi
 
 fig, ax = plt.subplots(1, 2, figsize=(10, 6))
 
@@ -674,3 +737,11 @@ np.savetxt(
     sorted(draws[0].index),
     fmt="%d",
 )
+
+#%%
+
+draws[0].to_csv(f'../data/constraining/draws_{output_ensemble_size}.csv')
+
+
+with open('../data/constraining/distributions.pickle', 'wb') as handle:
+    pickle.dump(dict_distributions, handle, protocol=pickle.HIGHEST_PROTOCOL)

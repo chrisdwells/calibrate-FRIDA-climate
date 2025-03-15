@@ -66,6 +66,8 @@ df.to_csv(
 
 os.makedirs("../data/spinup_output/", exist_ok=True)
 os.makedirs("../data/priors_output/", exist_ok=True)
+os.makedirs("../data/posteriors_output/", exist_ok=True)
+
 
 needed_csvs = [
     '../data/spinup_output/Ocean_spinup_output_end.csv',
@@ -78,6 +80,15 @@ needed_csvs = [
     '../data/priors_output/priors_ocean_CO2_flux.csv',
     '../data/priors_output/priors_ocean_heat_content.csv',
     '../data/priors_output/priors_temperature.csv',
+    
+    '../data/posteriors_output/posteriors_1980_initials.csv',
+    '../data/posteriors_output/posteriors_aerosols.csv',
+    '../data/posteriors_output/posteriors_CO2.csv',
+    '../data/posteriors_output/posteriors_ocean_CO2_flux.csv',
+    '../data/posteriors_output/posteriors_ocean_heat_content.csv',
+    '../data/posteriors_output/posteriors_temperature.csv',
+    
+    
     ]
 
 for csv in needed_csvs:

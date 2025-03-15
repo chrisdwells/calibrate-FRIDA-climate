@@ -15,9 +15,28 @@ runids = np.loadtxt(
     "../data/constraining/runids_rmse_reweighted_pass.csv",
 ).astype(np.int64)
 
+#%%
+
+# to be removed
+
+# run_csv = pd.read_csv("../../WorldTransFRIDA/Data/frida_climate_inputs_100_from_100000.csv")
+
+# runids = run_csv['Run'].values
+
+#%%
+
+
 df_prior_params = pd.read_csv(f"../data/priors_input/priors_inputs_{samples}.csv")
 
 
+prior_params_full = df_prior_params.values[runids]
+
+df_params_full = pd.DataFrame(data=prior_params_full, columns=df_prior_params.keys())
+
+df_params_full.to_csv(
+    f"../data/constraining/frida_climate_inputs_{output_ensemble_size}_from_{samples}_1750_inits.csv",
+    index=False,
+)
 
 # don't want the Initial stocks for the historical runs, but want the parameters
 df_prior_params = df_prior_params.loc[
@@ -95,6 +114,7 @@ df_combined.to_csv(
     f"../data/constraining/frida_climate_inputs_{output_ensemble_size}_from_{samples}.csv",
     index=False,
 )
+
 
 #%%
 
