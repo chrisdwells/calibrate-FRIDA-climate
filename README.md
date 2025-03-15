@@ -18,6 +18,8 @@ This repository performs the climate calibration for FRIDA.
 7. run Ocean_spinup_end.itmx (and export data)
 8. run 03-10
 9. run temperature_and_ocean_from_1750.itmx (and export data)
-10. 11-13
+10. run 11-13
+11. run Temperature_and_Ocean_from_1750_100_members
+12. run 14
 
 Information on each is given in the code. Part of the process involves running versions of the climate model in Stella.
