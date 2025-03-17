@@ -17,15 +17,6 @@ runids = np.loadtxt(
 
 #%%
 
-# to be removed
-
-# run_csv = pd.read_csv("../../WorldTransFRIDA/Data/frida_climate_inputs_100_from_100000.csv")
-
-# runids = run_csv['Run'].values
-
-#%%
-
-
 df_prior_params = pd.read_csv(f"../data/priors_input/priors_inputs_{samples}.csv")
 
 
@@ -49,8 +40,6 @@ for col_in in df_prior_params.keys():
     columns_params.append(col_in[:-3])
     
 df_run_params = pd.DataFrame(data=run_params, columns=columns_params)
-
-
 
 
 df_1980_inits = pd.read_csv("../data/priors_output/priors_1980_initials.csv")

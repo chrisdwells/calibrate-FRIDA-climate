@@ -27,16 +27,11 @@ assert input_ensemble_size > output_ensemble_size
 
 
 # need to manipulate temperature so do differently to others
-weights_20yr = np.ones(20)
-weights_20yr[0] = 0.5
-weights_20yr[-1] = 0.5
-weights_51yr = np.ones(51)
-weights_51yr[0] = 0.5
-weights_51yr[-1] = 0.5
 
 df_temp = pd.read_csv("../data/priors_output/priors_temperature.csv")
-temp_pi = np.average(df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=1900)].drop(columns='Year').values, weights=weights_51yr, axis=0)
-temp_pd = np.average(df_temp.loc[(df_temp['Year']>=2003) & (df_temp['Year']<=2022)].drop(columns='Year').values, weights=weights_20yr, axis=0)
+
+temp_pi = np.average(df_temp.loc[(df_temp['Year']>=1850) & (df_temp['Year']<=1900)].drop(columns='Year').values, axis=0)
+temp_pd = np.average(df_temp.loc[(df_temp['Year']>=2003) & (df_temp['Year']<=2022)].drop(columns='Year').values, axis=0)
 temp_in = temp_pd - temp_pi
 
 # for others, pull in data by run

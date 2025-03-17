@@ -19,19 +19,11 @@ draws_in = pd.read_csv(f'../data/constraining/draws_{output_ensemble_size}.csv')
 with open('../data/constraining/distributions.pickle', 'rb') as handle:
     dict_distributions = pickle.load(handle)
 
-
-weights_20yr = np.ones(20)
-weights_20yr[0] = 0.5
-weights_20yr[-1] = 0.5
-weights_51yr = np.ones(51)
-weights_51yr[0] = 0.5
-weights_51yr[-1] = 0.5
-
 temp_posteriors = pd.read_csv('../data/posteriors_output/posteriors_temperature.csv')
 
 
-temp_pi = np.average(temp_posteriors.loc[(temp_posteriors['Year']>=1850) & (temp_posteriors['Year']<=1900)].drop(columns='Year').values, weights=weights_51yr, axis=0)
-temp_pd = np.average(temp_posteriors.loc[(temp_posteriors['Year']>=2003) & (temp_posteriors['Year']<=2022)].drop(columns='Year').values, weights=weights_20yr, axis=0)
+temp_pi = np.average(temp_posteriors.loc[(temp_posteriors['Year']>=1850) & (temp_posteriors['Year']<=1900)].drop(columns='Year').values, axis=0)
+temp_pd = np.average(temp_posteriors.loc[(temp_posteriors['Year']>=2003) & (temp_posteriors['Year']<=2022)].drop(columns='Year').values, axis=0)
 
 temp_in = temp_pd - temp_pi
 
